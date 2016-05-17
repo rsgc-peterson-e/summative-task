@@ -21,4 +21,8 @@ class Cowboy {
     image(img, this.x, this.y);
     this.y += this.speed;
   }
+  
+  public void input() { // function will be called in a loop taking of user input to the cowboy characters
+    
+  }
 }
