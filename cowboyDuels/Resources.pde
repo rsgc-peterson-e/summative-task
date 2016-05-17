@@ -5,5 +5,7 @@ class Resource {
   
   public void load() {
     bg = loadImage("assets/img/testBg.png");
+    leftCowBoy = loadImage("assets/img/leftCowboy.png");
+    rightCowBoy = loadImage("assets/img/rightCowboy.png");
   }
 }
