@@ -12,4 +12,5 @@ void setup() {
 void draw() {
   image(r.bg, 0, 0);
   left.move(r.leftCowBoy);
+  left.input();
 }
