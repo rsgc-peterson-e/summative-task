@@ -27,28 +27,40 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 //import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
 
 Resource r = new Resource();
-Cowboy left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
-Cowboy right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
+Cowboy left;
+Cowboy right;
 Bullet test;
-Bullet test2;
+Bullet[] leftAmmo = new Bullet[5];
+
 
 public void setup() {
-  test = new Bullet(left, 2);
-  test2 = new Bullet(right, 2);
+  left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
+  right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
   
   r.load();
   r.bg.resize(800, 600);
+  // for (int i = 0)
+  test = new Bullet(left, 2);
 }
 
 
 public void draw() {
   image(r.bg, 0, 0);
-  left.move(r.leftCowBoy);
+  left.move();
   left.input();
-  right.move(r.rightCowBoy);
+  right.move();
   right.input();
   test.fire();
-  test2.fire();
+}
+
+public void keyTyped() { // runs when key is pressed and released
+  if (key == left.fireButton) {
+
+  }
+}
+
+public void bulletCleanUp() {
+
 }
 class Bullet {
   int x;
@@ -98,6 +110,7 @@ class Cowboy {
   private char fireButton;
   String whatSide; // stores what side the cowboy is on for the class
   boolean bulletFired; // true if the fire button specified in constructor has been pressed
+  PImage cowboy;
 
 
   public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
@@ -106,23 +119,36 @@ class Cowboy {
     this.downButton = d; // map up and down buttons to specified characters in the constructor
     this.upButton = u;
     this.fireButton = f;
+    if (side.equals("LEFT")) {
+      cowboy = loadImage("assets/img/leftCowboy.png");
+    }
+    if (side.equals("RIGHT")) {
+      cowboy = loadImage("assets/img/rightCowboy.png");
+    }
     this.whatSide = side;
     this.up = 0 - scrollSpeed;
     this.down = scrollSpeed;
   }
 
 
-  public void move(PImage cowboy) { // take cowboy image as input will also needs to run in a loop
+  public void move() { // take cowboy image as input will also needs to run in a loop
     cowboy.resize(256/2, 336/2);
     image(cowboy, this.x, this.y);
     this.y += this.speed;
-    if (this.whatSide.equals("LEFT")) {
+    if (this.whatSide.equals("LEFT")) { // set barrel coordinates for barrel for instance of cowboy on the left side of the screen
       this.barrelX = this.x + 80;
       this.barrelY = this.y + 86;
     }
     if (this.whatSide.equals("RIGHT")) {
       this.barrelX = this.x;
       this.barrelY = this.y + 86;
+    }
+    fill(255, 0, 0, 60);
+    if (this.whatSide.equals("LEFT")) {
+      rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+    }
+    if (this.whatSide.equals("RIGHT")) {
+      rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }
     changeDir();
   }
@@ -156,8 +182,7 @@ class Resource {
   public PImage bg; // background image
   public PImage leftCowBoy;
   public PImage rightCowBoy;
-  public PImage[] bullet = new PImage[20]; // bullet is a gif animation that will be stored in PImage array with each position being filled by a frame of the gif
-  public int gameState; // will determine what menu the game should be at
+  public int gameState = 1; // will determine what menu the game should be at
 
 
   public void load() { // loads assets for the game called once in setup

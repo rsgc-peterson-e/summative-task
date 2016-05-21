@@ -12,6 +12,7 @@ class Cowboy {
   private char fireButton;
   String whatSide; // stores what side the cowboy is on for the class
   boolean bulletFired; // true if the fire button specified in constructor has been pressed
+  PImage cowboy;
 
 
   public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
@@ -20,23 +21,36 @@ class Cowboy {
     this.downButton = d; // map up and down buttons to specified characters in the constructor
     this.upButton = u;
     this.fireButton = f;
+    if (side.equals("LEFT")) {
+      cowboy = loadImage("assets/img/leftCowboy.png");
+    }
+    if (side.equals("RIGHT")) {
+      cowboy = loadImage("assets/img/rightCowboy.png");
+    }
     this.whatSide = side;
     this.up = 0 - scrollSpeed;
     this.down = scrollSpeed;
   }
 
 
-  public void move(PImage cowboy) { // take cowboy image as input will also needs to run in a loop
+  public void move() { // take cowboy image as input will also needs to run in a loop
     cowboy.resize(256/2, 336/2);
     image(cowboy, this.x, this.y);
     this.y += this.speed;
-    if (this.whatSide.equals("LEFT")) {
+    if (this.whatSide.equals("LEFT")) { // set barrel coordinates for barrel for instance of cowboy on the left side of the screen
       this.barrelX = this.x + 80;
       this.barrelY = this.y + 86;
     }
     if (this.whatSide.equals("RIGHT")) {
       this.barrelX = this.x;
       this.barrelY = this.y + 86;
+    }
+    fill(255, 0, 0, 60);
+    if (this.whatSide.equals("LEFT")) {
+      rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+    }
+    if (this.whatSide.equals("RIGHT")) {
+      rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }
     changeDir();
   }

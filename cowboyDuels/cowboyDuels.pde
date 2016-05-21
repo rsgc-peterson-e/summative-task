@@ -11,26 +11,38 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 //import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
 
 Resource r = new Resource();
-Cowboy left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
-Cowboy right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
+Cowboy left;
+Cowboy right;
 Bullet test;
-Bullet test2;
+Bullet[] leftAmmo = new Bullet[5];
+
 
 void setup() {
-  test = new Bullet(left, 2);
-  test2 = new Bullet(right, 2);
+  left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
+  right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
   size(800, 600);
   r.load();
   r.bg.resize(800, 600);
+  for (int i = 0; i < )
+  test = new Bullet(left, 2);
 }
 
 
 void draw() {
   image(r.bg, 0, 0);
-  left.move(r.leftCowBoy);
+  left.move();
   left.input();
-  right.move(r.rightCowBoy);
+  right.move();
   right.input();
   test.fire();
-  test2.fire();
+}
+
+void keyTyped() { // runs when key is pressed and released
+  if (key == left.fireButton) {
+
+  }
+}
+
+void bulletCleanUp() {
+
 }
