@@ -2,7 +2,7 @@ class Resource {
   public PImage bg; // background image
   public PImage leftCowBoy;
   public PImage rightCowBoy;
-  public int gameState;
+  public int gameState; // will determine what menu the game should be at
   
   
   public void load() {

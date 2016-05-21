@@ -12,11 +12,7 @@ class Cowboy {
     this.downButton = d; // map up and down buttons to specified characters in the constructor
     this.upButton = u;
   }
-
-  public Cowboy() { // simple constructor for testing purposes that just sets a starting position
-    this.x = 5;
-    this.y = 400;
-  }
+  
 
   public void move(PImage cowboy) { // take cowboy image as input
     cowboy.resize(256/2, 336/2);
