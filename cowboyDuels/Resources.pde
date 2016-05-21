@@ -10,8 +10,5 @@ class Resource {
     bg = loadImage("assets/img/testBg.png");
     leftCowBoy = loadImage("assets/img/leftCowboy.png");
     rightCowBoy = loadImage("assets/img/rightCowboy.png");
-    for (int i = 0; i < 20; i++) {
-      bullet[i] = loadImage("assets/img/bullet/frame_" + i + ".gif"); // use a for loop and i variable to iterate through bullet array to set a frame of the gif animation to each position
-    }
   }
 }

@@ -29,13 +29,13 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 Resource r = new Resource();
 Cowboy left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
 Cowboy right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
-Bullet test = new Bullet();
+Bullet test;
 
 public void setup() {
+  test = new Bullet(left);
   
   r.load();
   r.bg.resize(800, 600);
-  frameRate(10);
 }
 
 
@@ -45,22 +45,29 @@ public void draw() {
   left.input();
   right.move(r.rightCowBoy);
   right.input();
-  test.fire(r.bullet);
+  test.fire();
 }
 class Bullet {
-  private int x;
-  private int y;
+  int x;
+  int y;
   private int speed = 2;
+  private PImage bullet;
 
-  // public Bullet(Cowboy c) {
-  //
-  // }
-
-
-  public void fire(PImage[] b) {
-    for (int i = 0; i < b.length; i++) {
-      image(b[i], 0, 0);
+  public Bullet(Cowboy c) {
+    this.x = c.barrelX;
+    this.y = c.barrelY;
+    if (c.whatSide.equals("LEFT")) { // check what image to load depending on which side of the screen the cowboy is on
+      this.bullet = loadImage("assets/img/left.png");
     }
+    if (c.whatSide.equals("RIGHT")) {
+      this.bullet = loadImage("assets/img/right.png");
+    }
+  }
+
+
+  public void fire() { // called in a loop where the bullet image is moved across screen
+    this.x++;
+    image(this.bullet, this.x, this.y);
   }
 }
 class Cowboy {
@@ -73,7 +80,7 @@ class Cowboy {
   int barrelY;
   private char downButton;
   private char upButton;
-  private String whatSide; // stores what side the cowboy is on for the class
+  String whatSide; // stores what side the cowboy is on for the class
 
 
   public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on

@@ -8,7 +8,7 @@ class Cowboy {
   int barrelY;
   private char downButton;
   private char upButton;
-  private String whatSide; // stores what side the cowboy is on for the class
+  String whatSide; // stores what side the cowboy is on for the class
 
 
   public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on

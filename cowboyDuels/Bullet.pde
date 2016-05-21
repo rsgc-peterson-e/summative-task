@@ -1,14 +1,23 @@
 class Bullet {
-  private int x;
-  private int y;
+  int x;
+  int y;
   private int speed = 2;
-  private String whatSide;
+  private PImage bullet;
+  Cowboy cowboy;
 
-  public Bullet(Cowboy c, String side) {
-
+  public Bullet(Cowboy c) {
+    this.cowboy = c;
+    if (c.whatSide.equals("LEFT")) { // check what image to load depending on which side of the screen the cowboy is on
+      this.bullet = loadImage("assets/img/left.png");
+    }
+    if (c.whatSide.equals("RIGHT")) {
+      this.bullet = loadImage("assets/img/right.png");
+    }
   }
 
 
-  public void fire(PImage b) {
+  public void fire() { // called in a loop where the bullet image is moved across screen
+    this.x++;
+    image(this.bullet, this.x, this.y);
   }
 }
