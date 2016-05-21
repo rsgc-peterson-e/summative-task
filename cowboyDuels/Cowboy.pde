@@ -11,7 +11,7 @@ class Cowboy {
   private String whatSide; // stores what side the cowboy is on for the class
 
 
-  public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, String side) { // take chars for up and down cowboy motion and speed and start coordinates take string to see what side the cowboy is on
+  public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
     this.x = startX; // set starting coordinates of the cowboy unique to any particular instance of the class using this
     this.y = startY;
     this.downButton = d; // map up and down buttons to specified characters in the constructor

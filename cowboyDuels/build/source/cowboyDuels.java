@@ -27,13 +27,15 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 //import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
 
 Resource r = new Resource();
-Cowboy left = new Cowboy(5, 300, 1, 'w', 's', "LEFT");
-Cowboy right = new Cowboy(665, 300, 1, 'u', 'j', "RIGHT");
+Cowboy left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
+Cowboy right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
+Bullet test = new Bullet();
 
 public void setup() {
   
   r.load();
   r.bg.resize(800, 600);
+  frameRate(10);
 }
 
 
@@ -43,16 +45,23 @@ public void draw() {
   left.input();
   right.move(r.rightCowBoy);
   right.input();
+  test.fire(r.bullet);
 }
 class Bullet {
   private int x;
   private int y;
   private int speed = 2;
 
-  public Bullet(Cowboy c) {
+  // public Bullet(Cowboy c) {
+  //
+  // }
 
+
+  public void fire(PImage[] b) {
+    for (int i = 0; i < b.length; i++) {
+      image(b[i], 0, 0);
+    }
   }
-
 }
 class Cowboy {
   private int x;
@@ -67,7 +76,7 @@ class Cowboy {
   private String whatSide; // stores what side the cowboy is on for the class
 
 
-  public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, String side) { // take chars for up and down cowboy motion and speed and start coordinates take string to see what side the cowboy is on
+  public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
     this.x = startX; // set starting coordinates of the cowboy unique to any particular instance of the class using this
     this.y = startY;
     this.downButton = d; // map up and down buttons to specified characters in the constructor
