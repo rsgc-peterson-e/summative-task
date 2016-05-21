@@ -2,16 +2,14 @@ class Cowboy {
   private int x;
   private int y;
   private int speed = -1;
-  private boolean whatSide;
   
-  public Cowboy(int startX, int startY, int scrollSpeed, boolean whatKeys) {
+  public Cowboy(int startX, int startY, int scrollSpeed, char u, char d) { // take chars for up and down cowboy motion and speed and start coordinates
     this.x = startX;
     this.y = startY;
     this.speed = scrollSpeed;
-    this.whatSide = whatKeys;
   }
   
-  public Cowboy() { // true is right side false is left side
+  public Cowboy() {
     this.x = 5;
     this.y = 400;
   }
@@ -27,7 +25,7 @@ class Cowboy {
       if (key == 'w') {
         this.speed = -1;  
       }
-      if (key == 'a') {
+      if (key == 's') {
         this.speed = 1;
       }
     }
