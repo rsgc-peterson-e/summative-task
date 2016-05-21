@@ -7,4 +7,7 @@ class Bullet {
 
   }
 
+  public void fire() {
+
+  }
 }

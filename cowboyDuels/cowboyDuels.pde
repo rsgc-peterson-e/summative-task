@@ -11,8 +11,8 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 //import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
 
 Resource r = new Resource();
-Cowboy left = new Cowboy(5, 300, 'w', 's', "LEFT");
-Cowboy right = new Cowboy(665, 300, 'u', 'j', "RIGHT");
+Cowboy left = new Cowboy(5, 300, 1, 'w', 's', "LEFT");
+Cowboy right = new Cowboy(665, 300, 1, 'u', 'j', "RIGHT");
 
 void setup() {
   size(800, 600);
