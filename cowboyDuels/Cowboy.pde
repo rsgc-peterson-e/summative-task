@@ -2,6 +2,8 @@ class Cowboy {
   private int x;
   private int y;
   private int speed = 1;
+  private int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
+  private int barrelY;
   private char downButton;
   private char upButton;
 
