@@ -17,8 +17,8 @@ Bullet test;
 Bullet test2;
 
 void setup() {
-  test = new Bullet(left);
-  test2 = new Bullet(right);
+  test = new Bullet(left, 2);
+  test2 = new Bullet(right, 2);
   size(800, 600);
   r.load();
   r.bg.resize(800, 600);

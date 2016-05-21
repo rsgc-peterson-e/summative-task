@@ -33,8 +33,8 @@ Bullet test;
 Bullet test2;
 
 public void setup() {
-  test = new Bullet(left);
-  test2 = new Bullet(right);
+  test = new Bullet(left, 2);
+  test2 = new Bullet(right, 2);
   
   r.load();
   r.bg.resize(800, 600);
@@ -53,11 +53,12 @@ public void draw() {
 class Bullet {
   int x;
   int y;
-  private int speed = 2;
+  private int speed;
   private PImage bullet;
   Cowboy cowboy;
 
-  public Bullet(Cowboy c) {
+  public Bullet(Cowboy c, int bulletSpeed) {
+    this.speed = bulletSpeed;
     this.cowboy = c; // assign cowboy object inputted into constructor to another cowboy object to be used throughout the program
     if (c.whatSide.equals("LEFT")) { // check what image to load depending on which side of the screen the cowboy is on
       this.bullet = loadImage("assets/img/left.png");
@@ -69,9 +70,18 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
-    this.y = cowboy.barrelY;
-    this.x = cowboy.barrelX;
-    image(this.bullet, this.x, this.y);
+    if (!cowboy.bulletFired) {
+      this.y = cowboy.barrelY;
+      this.x = cowboy.barrelX;
+    } else {
+      if (cowboy.whatSide.equals("LEFT")) {
+        this.x += this.speed;
+      }
+      if (cowboy.whatSide.equals("RIGHT")) {
+        this.x -= this.speed;
+      }
+      image(this.bullet, this.x, cowboy.yOnFire);
+    }
   }
 }
 class Cowboy {
@@ -82,9 +92,12 @@ class Cowboy {
   private int down;
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
+  int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
   private char downButton;
   private char upButton;
+  private char fireButton;
   String whatSide; // stores what side the cowboy is on for the class
+  boolean bulletFired; // true if the fire button specified in constructor has been pressed
 
 
   public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
@@ -92,6 +105,7 @@ class Cowboy {
     this.y = startY;
     this.downButton = d; // map up and down buttons to specified characters in the constructor
     this.upButton = u;
+    this.fireButton = f;
     this.whatSide = side;
     this.up = 0 - scrollSpeed;
     this.down = scrollSpeed;
@@ -115,11 +129,15 @@ class Cowboy {
 
   public void input() { // function will be called in a loop taking of user input to the cowboy characters
     if (keyPressed) {
-      if (key == this.upButton) {
+      if (key == this.upButton && !(this.y + 30 <= 25)) {
         this.speed = this.up;
       }
       if (key == this.downButton && !(this.y + 157 >= 550)) {
         this.speed = this.down;
+      }
+      if (key == fireButton && !bulletFired) {
+        this.bulletFired = true;
+        this.yOnFire = this.barrelY;
       }
     }
   }
