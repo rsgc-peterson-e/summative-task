@@ -17,8 +17,8 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
-    this.x = cowboy.barrelX;
     this.y = cowboy.barrelY;
+    this.x = cowboy.barrelX;
     image(this.bullet, this.x, this.y);
   }
 }

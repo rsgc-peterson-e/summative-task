@@ -27,12 +27,12 @@ class Cowboy {
     image(cowboy, this.x, this.y);
     this.y += this.speed;
     if (this.whatSide.equals("LEFT")) {
-      this.barrelX = this.x + 105;
-      this.barrelY = this.y + 109;
+      this.barrelX = this.x + 80;
+      this.barrelY = this.y + 86;
     }
     if (this.whatSide.equals("RIGHT")) {
-      this.barrelX = this.x + 23;
-      this.barrelY = this.y + 109;
+      this.barrelX = this.x;
+      this.barrelY = this.y + 86;
     }
     changeDir();
   }

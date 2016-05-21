@@ -69,8 +69,8 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
-    this.x = cowboy.barrelX;
     this.y = cowboy.barrelY;
+    this.x = cowboy.barrelX;
     image(this.bullet, this.x, this.y);
   }
 }
@@ -103,12 +103,12 @@ class Cowboy {
     image(cowboy, this.x, this.y);
     this.y += this.speed;
     if (this.whatSide.equals("LEFT")) {
-      this.barrelX = this.x + 105;
-      this.barrelY = this.y + 109;
+      this.barrelX = this.x + 80;
+      this.barrelY = this.y + 86;
     }
     if (this.whatSide.equals("RIGHT")) {
-      this.barrelX = this.x + 23;
-      this.barrelY = this.y + 109;
+      this.barrelX = this.x;
+      this.barrelY = this.y + 86;
     }
     changeDir();
   }
