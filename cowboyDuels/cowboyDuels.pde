@@ -14,9 +14,11 @@ Resource r = new Resource();
 Cowboy left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
 Cowboy right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
 Bullet test;
+Bullet test2;
 
 void setup() {
   test = new Bullet(left);
+  test2 = new Bullet(right);
   size(800, 600);
   r.load();
   r.bg.resize(800, 600);
@@ -30,4 +32,5 @@ void draw() {
   right.move(r.rightCowBoy);
   right.input();
   test.fire();
+  test2.fire();
 }

@@ -6,7 +6,7 @@ class Bullet {
   Cowboy cowboy;
 
   public Bullet(Cowboy c) {
-    this.cowboy = c;
+    this.cowboy = c; // assign cowboy object inputted into constructor to another cowboy object to be used throughout the program
     if (c.whatSide.equals("LEFT")) { // check what image to load depending on which side of the screen the cowboy is on
       this.bullet = loadImage("assets/img/left.png");
     }
@@ -17,7 +17,8 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
-    this.x++;
+    this.x = cowboy.barrelX;
+    this.y = cowboy.barrelY;
     image(this.bullet, this.x, this.y);
   }
 }

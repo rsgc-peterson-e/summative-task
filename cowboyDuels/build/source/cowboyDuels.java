@@ -30,9 +30,11 @@ Resource r = new Resource();
 Cowboy left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
 Cowboy right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
 Bullet test;
+Bullet test2;
 
 public void setup() {
   test = new Bullet(left);
+  test2 = new Bullet(right);
   
   r.load();
   r.bg.resize(800, 600);
@@ -46,16 +48,17 @@ public void draw() {
   right.move(r.rightCowBoy);
   right.input();
   test.fire();
+  test2.fire();
 }
 class Bullet {
   int x;
   int y;
   private int speed = 2;
   private PImage bullet;
+  Cowboy cowboy;
 
   public Bullet(Cowboy c) {
-    this.x = c.barrelX;
-    this.y = c.barrelY;
+    this.cowboy = c; // assign cowboy object inputted into constructor to another cowboy object to be used throughout the program
     if (c.whatSide.equals("LEFT")) { // check what image to load depending on which side of the screen the cowboy is on
       this.bullet = loadImage("assets/img/left.png");
     }
@@ -66,7 +69,8 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
-    this.x++;
+    this.x = cowboy.barrelX;
+    this.y = cowboy.barrelY;
     image(this.bullet, this.x, this.y);
   }
 }
@@ -142,9 +146,6 @@ class Resource {
     bg = loadImage("assets/img/testBg.png");
     leftCowBoy = loadImage("assets/img/leftCowboy.png");
     rightCowBoy = loadImage("assets/img/rightCowboy.png");
-    for (int i = 0; i < 20; i++) {
-      bullet[i] = loadImage("assets/img/bullet/frame_" + i + ".gif"); // use a for loop and i variable to iterate through bullet array to set a frame of the gif animation to each position
-    }
   }
 }
   public void settings() {  size(800, 600); }
