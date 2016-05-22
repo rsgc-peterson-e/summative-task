@@ -52,8 +52,18 @@ boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { /
 
 void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
-    if (bulletInCowboy(b.x, b.y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
-      println("HIT");
+    for (int j = 0; j < b.points.length; j++) { // create second for loop that only runs the length of the points array to prevent Array out of bounds
+      if (bulletInCowboy(b.points[j].x, b.points[j].y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
+        if (b.cowboy.whatSide.equals("LEFT") && b.cowboy.bulletFired) { // check what side the bullet is from and if it has been fired
+          r.leftScore++; // increase the players score by 1 if they hit the other
+          b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
+          println("LEFT SCORE: " + r.leftScore);
+        } else if (b.cowboy.whatSide.equals("RIGHT") && b.cowboy.bulletFired) {
+          r.rightScore++;
+          b.cowboy.bulletFired = false;
+          println("RIGHT SCORE: " + r.rightScore);
+        }
+      }
     }
   }
 }

@@ -68,8 +68,18 @@ public boolean bulletInCowboy(int px, int py, int x, int y, int width, int heigh
 
 public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
-    if (bulletInCowboy(b.x, b.y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
-      println("HIT");
+    for (int j = 0; j < b.points.length; j++) { // create second for loop that only runs the length of the points array to prevent Array out of bounds
+      if (bulletInCowboy(b.points[j].x, b.points[j].y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
+        if (b.cowboy.whatSide.equals("LEFT") && b.cowboy.bulletFired) {
+          r.leftScore++;
+          b.cowboy.bulletFired = false;
+          println("LEFT SCORE: " + r.leftScore);
+        } else if (b.cowboy.whatSide.equals("RIGHT") && b.cowboy.bulletFired) {
+          r.rightScore++;
+          b.cowboy.bulletFired = false;
+          println("RIGHT SCORE: " + r.rightScore);
+        }
+      }
     }
   }
 }
@@ -79,7 +89,7 @@ class Bullet {
   private int speed;
   private PImage bullet;
   Cowboy cowboy;
-  public Hitbox[] cPoints = new Hitbox[3];
+  public Hitbox[] points = new Hitbox[3];
 
   public Bullet(Cowboy c, int bulletSpeed) {
     this.speed = bulletSpeed;
@@ -89,6 +99,10 @@ class Bullet {
     }
     if (c.whatSide.equals("RIGHT")) {
       this.bullet = loadImage("assets/img/right.png");
+    }
+    // initialize Hitbox arrays
+    for (int i = 0; i < points.length; i++) {
+      points[i] = new Hitbox();
     }
   }
 
@@ -100,7 +114,7 @@ class Bullet {
       image(this.bullet, this.x, this.y);
       fill(255);
       if (this.cowboy.whatSide.equals("LEFT")) {
-        ellipse(this.x + 50, this.y + 23, 5, 5);
+        ellipse(this.x + 50, this.y + 23, 5, 5); // draw collision points onscreen for testing purposes
         ellipse(this.x + 35, this.y + 18, 5, 5);
         ellipse(this.x + 35, this.y + 30, 5, 5);
       } else {
@@ -111,20 +125,25 @@ class Bullet {
     } else if (this.cowboy.bulletFired) {
       this.cowboy.yOnFire = this.y;
       if (this.cowboy.whatSide.equals("LEFT")) {
+        points[0].setPoint(this.x + 50, this.y + 23);
+        points[1].setPoint(this.x + 35, this.y + 18);
+        points[2].setPoint(this.x + 35, this.y + 30);
+        image(this.bullet, this.x, this.y);
         this.x += this.speed;
         if (this.x > 800) {
           this.cowboy.bulletFired = false;
         }
       }
       if (this.cowboy.whatSide.equals("RIGHT")) {
+        points[0].setPoint(this.x, this.y + 23);
+        points[1].setPoint(this.x + 15, this.y + 18);
+        points[2].setPoint(this.x + 15, this.y + 30);
+        image(this.bullet, this.x, this.y);
         this.x -= this.speed;
         if (this.x < -50) {
           this.cowboy.bulletFired = false;
         }
       }
-      image(this.bullet, this.x, this.cowboy.yOnFire);
-      fill(255);
-      ellipse(this.x + 25, this.cowboy.yOnFire, 5, 5);
     }
   }
 }
@@ -271,8 +290,8 @@ class Resource {
   public PImage leftCowBoy;
   public PImage rightCowBoy;
   public int gameState = 1; // will determine what menu the game should be at
-  public int leftScore; // score variables for left and right players
-  public int rightScore;
+  public int leftScore = 0; // score variables for left and right players
+  public int rightScore = 0;
 
 
   public void load() { // loads assets for the game called once in setup

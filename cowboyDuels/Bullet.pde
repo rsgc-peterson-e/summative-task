@@ -4,7 +4,7 @@ class Bullet {
   private int speed;
   private PImage bullet;
   Cowboy cowboy;
-  public Hitbox[] cPoints = new Hitbox[3];
+  public Hitbox[] points = new Hitbox[3];
 
   public Bullet(Cowboy c, int bulletSpeed) {
     this.speed = bulletSpeed;
@@ -14,6 +14,10 @@ class Bullet {
     }
     if (c.whatSide.equals("RIGHT")) {
       this.bullet = loadImage("assets/img/right.png");
+    }
+    // initialize Hitbox arrays
+    for (int i = 0; i < points.length; i++) {
+      points[i] = new Hitbox();
     }
   }
 
@@ -25,7 +29,7 @@ class Bullet {
       image(this.bullet, this.x, this.y);
       fill(255);
       if (this.cowboy.whatSide.equals("LEFT")) {
-        ellipse(this.x + 50, this.y + 23, 5, 5);
+        ellipse(this.x + 50, this.y + 23, 5, 5); // draw collision points onscreen for testing purposes
         ellipse(this.x + 35, this.y + 18, 5, 5);
         ellipse(this.x + 35, this.y + 30, 5, 5);
       } else {
@@ -36,20 +40,25 @@ class Bullet {
     } else if (this.cowboy.bulletFired) {
       this.cowboy.yOnFire = this.y;
       if (this.cowboy.whatSide.equals("LEFT")) {
+        points[0].setPoint(this.x + 50, this.y + 23);
+        points[1].setPoint(this.x + 35, this.y + 18);
+        points[2].setPoint(this.x + 35, this.y + 30);
+        image(this.bullet, this.x, this.y);
         this.x += this.speed;
         if (this.x > 800) {
           this.cowboy.bulletFired = false;
         }
       }
       if (this.cowboy.whatSide.equals("RIGHT")) {
+        points[0].setPoint(this.x, this.y + 23);
+        points[1].setPoint(this.x + 15, this.y + 18);
+        points[2].setPoint(this.x + 15, this.y + 30);
+        image(this.bullet, this.x, this.y);
         this.x -= this.speed;
         if (this.x < -50) {
           this.cowboy.bulletFired = false;
         }
       }
-      image(this.bullet, this.x, this.cowboy.yOnFire);
-      fill(255);
-      ellipse(this.x + 25, this.cowboy.yOnFire, 5, 5);
     }
   }
 }
