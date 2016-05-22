@@ -39,9 +39,6 @@ void draw() {
   rightBullet.fire();
   collision(right.hitbox, leftBullet);
   collision(left.hitbox, rightBullet);
-  println("Right Leg: X:" + right.hitbox[3].x + " Y: " + right.hitbox[3].y);
-  println("MOUSEX: " + mouseX + " MOUSEY: " + mouseY);
-  println("MOUSE OVER RIGHT: " + bulletInCowboy(mouseX, mouseY, right.hitbox[3].x, right.hitbox[3].y, right.hitbox[3].w, right.hitbox[3].h));
 }
 
 

@@ -54,25 +54,25 @@ class Cowboy {
       this.hitbox[0].update(this.x + 45, this.y + 27, this.cowboy.width - 95, this.cowboy.height - 130); // index hit box coordinates into unique objects in the array
       this.hitbox[1].update(this.x + 20, this.y + 45, this.cowboy.width - 50, this.cowboy.height - 135);
       this.hitbox[2].update(this.x + 35, this.y + 77, this.cowboy.width - 80, this.cowboy.height - 115);
-      this.hitbox[3].update(this.x + 87, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
-      this.hitbox[4].update(this.x + 60, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
+      this.hitbox[3].update(this.x + 60, this.y + 130, 27, cowboy.height - 140);
+      this.hitbox[4].update(this.x + 33, this.y + 130, 27, cowboy.height - 140);
       rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
       rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
       rect(this.x + 35, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
-      rect(this.x + 87, this.y + 130, cowboy.width - 155, cowboy.height - 140); // right leg
-      rect(this.x + 60, this.y + 130, cowboy.width - 155, cowboy.height - 140); // left leg
+      rect(this.x + 60, this.y + 130, 27, cowboy.height - 140); // right leg
+      rect(this.x + 33, this.y + 130, 27, cowboy.height - 140); // left leg
     }
     if (this.whatSide.equals("RIGHT")) {
       this.hitbox[0].update(this.x + 50, this.y + 27, this.cowboy.width - 95, this.cowboy.height - 130);
       this.hitbox[1].update(this.x + 25, this.y + 45, this.cowboy.width - 50, this.cowboy.height - 135);
       this.hitbox[2].update(this.x + 45, this.y + 77, this.cowboy.width - 80, this.cowboy.height - 115);
-      // this.hitbox[3].update(this.x + 67, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
-      // this.hitbox[4].update(this.x + 95, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
+      this.hitbox[3].update(this.x + 40, this.y + 130, 27, cowboy.height - 140);
+      this.hitbox[4].update(this.x + 69, this.y + 130, 27, cowboy.height - 140);
       rect(this.x + 50, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
       rect(this.x + 25, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
       rect(this.x + 45, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
-      // rect(this.x + 67, this.y + 130, cowboy.width - 155, cowboy.height - 140); // right leg
-      // rect(this.x + 95, this.y + 130, cowboy.width - 155, cowboy.height - 140); // left leg
+      rect(this.x + 40, this.y + 130, 27, cowboy.height - 140); // left leg hitbox
+      rect(this.x + 69, this.y + 130, 27, cowboy.height - 140); // right leg hitbox
     }
     changeDir();
   }
