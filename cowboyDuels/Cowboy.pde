@@ -7,6 +7,7 @@ class Cowboy {
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
+  int[] hitBox = new int[4];
   private char downButton;
   private char upButton;
   private char fireButton;
@@ -47,10 +48,18 @@ class Cowboy {
     }
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
-      rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      hitBox[0] = this.x + 25;
+      hitBox[1] = this.y + 27;
+      hitBox[2] = cowboy.width - 45;
+      hitBox[3] = cowboy.height - 35;
+      rect(hitBox[0], hitBox[1], hitBox[2], hitBox[3]);
     }
     if (this.whatSide.equals("RIGHT")) {
-      rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      hitBox[0] = this.x + 20;
+      hitBox[1] = this.y + 27;
+      hitBox[2] = cowboy.width - 45;
+      hitBox[3] = cowboy.height - 35;
+      rect(hitBox[0], hitBox[1], hitBox[2], hitBox[3]);
     }
     changeDir();
   }
@@ -73,10 +82,10 @@ class Cowboy {
 
   private void changeDir() { // function will invert direction of cowboy to keeping it off screen
     if (this.y + 157 >= 575) {
-      this.speed = -1;
+      this.speed = this.up;
     }
     if (this.y + 30 <= 25) {
-      this.speed = 1;
+      this.speed = this.down;
     }
   }
 }
