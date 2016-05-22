@@ -4,6 +4,7 @@ class Hitbox {
   public int width;
   public int height;
 
+
   public Hitbox() {/*Nothing to Construct*/}
 
   public void update(int bx, int by, int bw, int bh) { // take boxes x, y, width and height for assignment to variables with values unique to the particular object
@@ -11,5 +12,10 @@ class Hitbox {
     this.y = by;
     this.width = bw;
     this.height = bh;
+  }
+
+  public void setPoint(int px, int py) { // save a collision point to the objecta as oppose to a full hitbox
+    this.x = px;
+    this.y = py;
   }
 }

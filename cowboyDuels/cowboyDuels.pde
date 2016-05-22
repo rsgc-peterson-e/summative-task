@@ -41,6 +41,7 @@ void draw() {
   collision(left.leftHitbox, rightBullet);
 }
 
+
 boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
   if (px >= x && px <= x+width && py >= y && py <= y+height) { // taken with influence from my OnClickListener class in my ISP
     return true;

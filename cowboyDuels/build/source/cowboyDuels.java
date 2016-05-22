@@ -53,11 +53,10 @@ public void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
-  //println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
-  //println(left.test.y);
   collision(right.rightHitbox, leftBullet);
   collision(left.leftHitbox, rightBullet);
 }
+
 
 public boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
   if (px >= x && px <= x+width && py >= y && py <= y+height) { // taken with influence from my OnClickListener class in my ISP
@@ -69,7 +68,7 @@ public boolean bulletInCowboy(int px, int py, int x, int y, int width, int heigh
 
 public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
-    if (bulletInCowboy(b.x, b.y, h[i].x, h[i].y, h[i].width, h[i].height)) {
+    if (bulletInCowboy(b.x, b.y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
       println("HIT");
     }
   }
@@ -80,6 +79,7 @@ class Bullet {
   private int speed;
   private PImage bullet;
   Cowboy cowboy;
+  public Hitbox[] cPoints = new Hitbox[3];
 
   public Bullet(Cowboy c, int bulletSpeed) {
     this.speed = bulletSpeed;
@@ -97,7 +97,17 @@ class Bullet {
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
-      //image(this.bullet, this.x, this.y);
+      image(this.bullet, this.x, this.y);
+      fill(255);
+      if (this.cowboy.whatSide.equals("LEFT")) {
+        ellipse(this.x + 50, this.y + 23, 5, 5);
+        ellipse(this.x + 35, this.y + 18, 5, 5);
+        ellipse(this.x + 35, this.y + 30, 5, 5);
+      } else {
+        ellipse(this.x, this.y + 23, 5, 5);
+        ellipse(this.x + 15, this.y + 18, 5, 5);
+        ellipse(this.x + 15, this.y + 30, 5, 5);
+      }
     } else if (this.cowboy.bulletFired) {
       this.cowboy.yOnFire = this.y;
       if (this.cowboy.whatSide.equals("LEFT")) {
@@ -114,18 +124,9 @@ class Bullet {
       }
       image(this.bullet, this.x, this.cowboy.yOnFire);
       fill(255);
-      ellipse(this.x, this.cowboy.yOnFire, 5, 5);
+      ellipse(this.x + 25, this.cowboy.yOnFire, 5, 5);
     }
   }
-
-  // private boolean bulletInCowboy(String side) {
-  //   if (side.equals("RIGHT") && this.x >= cowboy.rightHitbox[0] && this.x <= cowboy.rightHitbox[0] + cowboy.rightHitbox[2] && this.cowboy.yOnFire >= cowboy.rightHitbox[1]
-  //   && this.cowboy.yOnFire <= cowboy.rightHitbox[1] + cowboy.rightHitbox[3]) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 }
 class Cowboy {
   private int x;
@@ -250,6 +251,7 @@ class Hitbox {
   public int width;
   public int height;
 
+
   public Hitbox() {/*Nothing to Construct*/}
 
   public void update(int bx, int by, int bw, int bh) { // take boxes x, y, width and height for assignment to variables with values unique to the particular object
@@ -257,6 +259,11 @@ class Hitbox {
     this.y = by;
     this.width = bw;
     this.height = bh;
+  }
+
+  public void setPoint(int px, int py) { // save a collision point to the objecta as oppose to a full hitbox
+    this.x = px;
+    this.y = py;
   }
 }
 class Resource {

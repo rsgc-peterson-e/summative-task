@@ -4,6 +4,7 @@ class Bullet {
   private int speed;
   private PImage bullet;
   Cowboy cowboy;
+  public Hitbox[] cPoints = new Hitbox[3];
 
   public Bullet(Cowboy c, int bulletSpeed) {
     this.speed = bulletSpeed;
@@ -21,7 +22,17 @@ class Bullet {
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
-      //image(this.bullet, this.x, this.y);
+      image(this.bullet, this.x, this.y);
+      fill(255);
+      if (this.cowboy.whatSide.equals("LEFT")) {
+        ellipse(this.x + 50, this.y + 23, 5, 5);
+        ellipse(this.x + 35, this.y + 18, 5, 5);
+        ellipse(this.x + 35, this.y + 30, 5, 5);
+      } else {
+        ellipse(this.x, this.y + 23, 5, 5);
+        ellipse(this.x + 15, this.y + 18, 5, 5);
+        ellipse(this.x + 15, this.y + 30, 5, 5);
+      }
     } else if (this.cowboy.bulletFired) {
       this.cowboy.yOnFire = this.y;
       if (this.cowboy.whatSide.equals("LEFT")) {
@@ -38,16 +49,7 @@ class Bullet {
       }
       image(this.bullet, this.x, this.cowboy.yOnFire);
       fill(255);
-      ellipse(this.x, this.cowboy.yOnFire, 5, 5);
+      ellipse(this.x + 25, this.cowboy.yOnFire, 5, 5);
     }
   }
-
-  // private boolean bulletInCowboy(String side) {
-  //   if (side.equals("RIGHT") && this.x >= cowboy.rightHitbox[0] && this.x <= cowboy.rightHitbox[0] + cowboy.rightHitbox[2] && this.cowboy.yOnFire >= cowboy.rightHitbox[1]
-  //   && this.cowboy.yOnFire <= cowboy.rightHitbox[1] + cowboy.rightHitbox[3]) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 }
