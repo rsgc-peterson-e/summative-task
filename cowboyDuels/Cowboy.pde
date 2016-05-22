@@ -7,8 +7,10 @@ class Cowboy {
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
-  int[] hitBox = new int[4];
-  HitBox test = new HitBox();
+  public int[] leftHitbox = new int[4];
+  public int[] rightHitbox = new int[4];
+  // HitBox leftHitbox = new HitBox();
+  // HitBox rightHitbox = new HitBox();
   private char downButton;
   private char upButton;
   private char fireButton;
@@ -49,19 +51,19 @@ class Cowboy {
     }
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
-      // hitBox[0] = this.x + 25;
-      // hitBox[1] = this.y + 27;
-      // hitBox[2] = cowboy.width - 45;
-      // hitBox[3] = cowboy.height - 35;
-      test.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      leftHitbox[0] = this.x + 25;
+      leftHitbox[1] = this.y + 27;
+      leftHitbox[2] = cowboy.width - 45;
+      leftHitbox[3] = cowboy.height - 35;
+      //leftHitbox.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }
     if (this.whatSide.equals("RIGHT")) {
-      // hitBox[0] = this.x + 20;
-      // hitBox[1] = this.y + 27;
-      // hitBox[2] = cowboy.width - 45;
-      // hitBox[3] = cowboy.height - 35;
-      test.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      rightHitbox[0] = this.x + 20;
+      rightHitbox[1] = this.y + 27;
+      rightHitbox[2] = cowboy.width - 45;
+      rightHitbox[3] = cowboy.height - 35;
+      //rightHitbox.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }
     changeDir();

@@ -18,6 +18,7 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
+    //println(bulletInCowboy("RIGHT"));
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
@@ -26,18 +27,26 @@ class Bullet {
       if (cowboy.whatSide.equals("LEFT")) {
         this.x += this.speed;
         if (this.x > 800) {
-          cowboy.bulletFired = false;
+          this.cowboy.bulletFired = false;
         }
       }
       if (cowboy.whatSide.equals("RIGHT")) {
         this.x -= this.speed;
         if (this.x < -50) {
-          cowboy.bulletFired = false;
+          this.cowboy.bulletFired = false;
         }
       }
       image(this.bullet, this.x, cowboy.yOnFire);
       fill(255);
       ellipse(this.x, cowboy.yOnFire, 5, 5);
+    }
+  }
+
+  private boolean bulletInCowboy(String side) {
+    if (side.equals("RIGHT") && mouseX >= cowboy.rightHitbox[0] && mouseX <= cowboy.rightHitbox[0] + cowboy.rightHitbox[2] && mouseY >= cowboy.rightHitbox[1] && mouseY <= cowboy.rightHitbox[1] + cowboy.rightHitbox[3]) {
+      return true;
+    } else {
+      return false;
     }
   }
 }
