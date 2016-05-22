@@ -60,12 +60,20 @@ class Cowboy {
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
       //leftHitbox.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
-      rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130);
-      rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135);
+      rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
+      rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
+      rect(this.x + 35, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
+      rect(this.x + 87, this.y + 130, cowboy.width - 155, cowboy.height - 140); // right leg
+      rect(this.x + 60, this.y + 130, cowboy.width - 155, cowboy.height - 140); // left leg
     }
     if (this.whatSide.equals("RIGHT")) {
       //rightHitbox.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
-      rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      // rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      rect(this.x + 50, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
+      rect(this.x + 25, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
+      rect(this.x + 45, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
+      rect(this.x + 67, this.y + 130, cowboy.width - 155, cowboy.height - 140); // right leg
+      rect(this.x + 95, this.y + 130, cowboy.width - 155, cowboy.height - 140); // left leg
     }
     changeDir();
   }
