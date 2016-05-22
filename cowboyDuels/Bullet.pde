@@ -21,6 +21,7 @@ class Bullet {
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
+      image(this.bullet, this.x, this.y);
     } else {
       if (cowboy.whatSide.equals("LEFT")) {
         this.x += this.speed;
@@ -29,6 +30,9 @@ class Bullet {
         this.x -= this.speed;
       }
       image(this.bullet, this.x, cowboy.yOnFire);
+      if (this.x > 800) {
+        cowboy.bulletFired = false;
+      }
     }
   }
 }

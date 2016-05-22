@@ -63,7 +63,7 @@ class Cowboy {
       if (key == this.downButton && !(this.y + 157 >= 550)) {
         this.speed = this.down;
       }
-      if (key == fireButton && !bulletFired) {
+      if (key == this.fireButton && !bulletFired) {
         this.bulletFired = true;
         this.yOnFire = this.barrelY;
       }

@@ -29,8 +29,10 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 Resource r = new Resource();
 Cowboy left;
 Cowboy right;
-Bullet test;
 Bullet[] leftAmmo = new Bullet[5];
+Bullet[] rightAmmo = new Bullet[5];
+int timesLeftFired = 0; // tracks the amount of time the left fire button has been pressed
+int timesRightFired = 0;
 
 
 public void setup() {
@@ -39,8 +41,10 @@ public void setup() {
   
   r.load();
   r.bg.resize(800, 600);
-  // for (int i = 0)
-  test = new Bullet(left, 2);
+  for (int i = 0; i < leftAmmo.length; i++) {
+    leftAmmo[i] = new Bullet(left, 2);
+    rightAmmo[i] = new Bullet(right, 2);
+  }
 }
 
 
@@ -50,18 +54,20 @@ public void draw() {
   left.input();
   right.move();
   right.input();
-  test.fire();
+  leftAmmo[timesLeftFired].fire();
+  rightAmmo[timesRightFired].fire();
 }
 
-public void keyTyped() { // runs when key is pressed and released
-  if (key == left.fireButton) {
 
-  }
-}
-
-public void bulletCleanUp() {
-
-}
+// void keyTyped() { // runs when key is pressed and released
+//   if (key == left.fireButton) {
+//
+//     timesLeftFired++;
+//   }
+//   if (key == right.fireButton) {
+//     timesRightFired++;
+//   }
+// }
 class Bullet {
   int x;
   int y;
@@ -85,6 +91,7 @@ class Bullet {
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
+      image(this.bullet, this.x, this.y);
     } else {
       if (cowboy.whatSide.equals("LEFT")) {
         this.x += this.speed;
@@ -93,6 +100,9 @@ class Bullet {
         this.x -= this.speed;
       }
       image(this.bullet, this.x, cowboy.yOnFire);
+      if (this.x > 800) {
+        cowboy.bulletFired = false;
+      }
     }
   }
 }
@@ -161,7 +171,7 @@ class Cowboy {
       if (key == this.downButton && !(this.y + 157 >= 550)) {
         this.speed = this.down;
       }
-      if (key == fireButton && !bulletFired) {
+      if (key == this.fireButton && !bulletFired) {
         this.bulletFired = true;
         this.yOnFire = this.barrelY;
       }

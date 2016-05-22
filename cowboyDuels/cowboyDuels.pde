@@ -13,8 +13,10 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 Resource r = new Resource();
 Cowboy left;
 Cowboy right;
-Bullet test;
 Bullet[] leftAmmo = new Bullet[5];
+Bullet[] rightAmmo = new Bullet[5];
+int timesLeftFired = 0; // tracks the amount of time the left fire button has been pressed
+int timesRightFired = 0;
 
 
 void setup() {
@@ -23,8 +25,10 @@ void setup() {
   size(800, 600);
   r.load();
   r.bg.resize(800, 600);
-  for (int i = 0; i < )
-  test = new Bullet(left, 2);
+  for (int i = 0; i < leftAmmo.length; i++) {
+    leftAmmo[i] = new Bullet(left, 2);
+    rightAmmo[i] = new Bullet(right, 2);
+  }
 }
 
 
@@ -34,15 +38,17 @@ void draw() {
   left.input();
   right.move();
   right.input();
-  test.fire();
+  leftAmmo[timesLeftFired].fire();
+  rightAmmo[timesRightFired].fire();
 }
 
-void keyTyped() { // runs when key is pressed and released
-  if (key == left.fireButton) {
 
-  }
-}
-
-void bulletCleanUp() {
-
-}
+// void keyTyped() { // runs when key is pressed and released
+//   if (key == left.fireButton) {
+//
+//     timesLeftFired++;
+//   }
+//   if (key == right.fireButton) {
+//     timesRightFired++;
+//   }
+// }
