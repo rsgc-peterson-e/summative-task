@@ -21,8 +21,8 @@ int leftBulletY;
 void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
   right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
-  leftBullet = new Bullet(left, 2);
-  rightBullet = new Bullet(right, 2);
+  leftBullet = new Bullet(left, 5);
+  rightBullet = new Bullet(right, 5);
   size(800, 600);
   r.load();
   r.bg.resize(800, 600);
@@ -37,8 +37,11 @@ void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
-  collision(right.rightHitbox, leftBullet);
-  collision(left.leftHitbox, rightBullet);
+  collision(right.hitbox, leftBullet);
+  collision(left.hitbox, rightBullet);
+  println("Right Leg: X:" + right.hitbox[3].x + " Y: " + right.hitbox[3].y);
+  println("MOUSEX: " + mouseX + " MOUSEY: " + mouseY);
+  println("MOUSE OVER RIGHT: " + bulletInCowboy(mouseX, mouseY, right.hitbox[3].x, right.hitbox[3].y, right.hitbox[3].w, right.hitbox[3].h));
 }
 
 
@@ -50,10 +53,11 @@ boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { /
   }
 }
 
+
 void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
     for (int j = 0; j < b.points.length; j++) { // create second for loop that only runs the length of the points array to prevent Array out of bounds
-      if (bulletInCowboy(b.points[j].x, b.points[j].y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
+      if (bulletInCowboy(b.points[j].x, b.points[j].y, h[i].x, h[i].y, h[i].w, h[i].h)) { // check each hitbox in the array to see if one is in contact with the bullet
         if (b.cowboy.whatSide.equals("LEFT") && b.cowboy.bulletFired) { // check what side the bullet is from and if it has been fired
           r.leftScore++; // increase the players score by 1 if they hit the other
           b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
@@ -66,4 +70,9 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
       }
     }
   }
+}
+
+
+void hud() { // will draw important info onscreen like score
+
 }

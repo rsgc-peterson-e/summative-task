@@ -37,8 +37,8 @@ int leftBulletY;
 public void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
   right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
-  leftBullet = new Bullet(left, 2);
-  rightBullet = new Bullet(right, 2);
+  leftBullet = new Bullet(left, 5);
+  rightBullet = new Bullet(right, 5);
   
   r.load();
   r.bg.resize(800, 600);
@@ -53,8 +53,11 @@ public void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
-  collision(right.rightHitbox, leftBullet);
-  collision(left.leftHitbox, rightBullet);
+  collision(right.hitbox, leftBullet);
+  collision(left.hitbox, rightBullet);
+  println("Right Leg: X:" + right.hitbox[3].x + " Y: " + right.hitbox[3].y);
+  println("MOUSEX: " + mouseX + " MOUSEY: " + mouseY);
+  println("MOUSE OVER RIGHT: " + bulletInCowboy(mouseX, mouseY, right.hitbox[3].x, right.hitbox[3].y, right.hitbox[3].w, right.hitbox[3].h));
 }
 
 
@@ -66,13 +69,14 @@ public boolean bulletInCowboy(int px, int py, int x, int y, int width, int heigh
   }
 }
 
+
 public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
     for (int j = 0; j < b.points.length; j++) { // create second for loop that only runs the length of the points array to prevent Array out of bounds
-      if (bulletInCowboy(b.points[j].x, b.points[j].y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
-        if (b.cowboy.whatSide.equals("LEFT") && b.cowboy.bulletFired) {
-          r.leftScore++;
-          b.cowboy.bulletFired = false;
+      if (bulletInCowboy(b.points[j].x, b.points[j].y, h[i].x, h[i].y, h[i].w, h[i].h)) { // check each hitbox in the array to see if one is in contact with the bullet
+        if (b.cowboy.whatSide.equals("LEFT") && b.cowboy.bulletFired) { // check what side the bullet is from and if it has been fired
+          r.leftScore++; // increase the players score by 1 if they hit the other
+          b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
           println("LEFT SCORE: " + r.leftScore);
         } else if (b.cowboy.whatSide.equals("RIGHT") && b.cowboy.bulletFired) {
           r.rightScore++;
@@ -82,6 +86,11 @@ public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's 
       }
     }
   }
+}
+
+
+public void hud() { // will draw important info onscreen like score
+
 }
 class Bullet {
   int x;
@@ -156,10 +165,7 @@ class Cowboy {
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
-  // public int[] leftHitbox = new int[4];
-  // public int[] rightHitbox = new int[4];
-  public Hitbox[] leftHitbox = new Hitbox[5];
-  public Hitbox[] rightHitbox = new Hitbox[5];
+  public Hitbox[] hitbox = new Hitbox[5];
   private char downButton;
   private char upButton;
   private char fireButton;
@@ -183,9 +189,8 @@ class Cowboy {
     this.whatSide = side;
     this.up = 0 - scrollSpeed;
     this.down = scrollSpeed;
-    for (int i = 0; i < leftHitbox.length; i++) { // for loop to construct array of Hitbox objects
-      this.leftHitbox[i] = new Hitbox();
-      this.rightHitbox[i] = new Hitbox();
+    for (int i = 0; i < hitbox.length; i++) { // for loop to construct array of Hitbox objects
+      this.hitbox[i] = new Hitbox();
     }
   }
 
@@ -193,25 +198,6 @@ class Cowboy {
   public void move() { // take cowboy image as input will also needs to run in a loop
     this.cowboy.resize(256/2, 336/2);
     image(cowboy, this.x, this.y);
-    // this.rightHitbox[0] = this.x + 20; // index and update respective cowboy hitbox | x coordinate
-    // this.rightHitbox[1] = this.y + 27; // y coordinate
-    // this.rightHitbox[2] = this.cowboy.width - 45; // width
-    // this.rightHitbox[3] = this.cowboy.height - 35; // height
-    // this.leftHitbox[0] = this.x + 25;
-    // this.leftHitbox[1] = this.y + 27;
-    // this.leftHitbox[2] = this.cowboy.width - 45;
-    // this.leftHitbox[3] = this.cowboy.height - 35;
-    this.leftHitbox[0].update(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130); // index hit box coordinates into unique objects in the array
-    this.leftHitbox[1].update(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135);
-    this.leftHitbox[2].update(this.x + 35, this.y + 77, cowboy.width - 80, cowboy.height - 115);
-    this.leftHitbox[3].update(this.x + 87, this.y + 130, cowboy.width - 155, cowboy.height - 140);
-    this.leftHitbox[4].update(this.x + 60, this.y + 130, cowboy.width - 155, cowboy.height - 140);
-    // now right side hitboxes
-    this.rightHitbox[0].update(this.x + 50, this.y + 27, cowboy.width - 95, cowboy.height - 130);
-    this.rightHitbox[1].update(this.x + 25, this.y + 45, cowboy.width - 50, cowboy.height - 135);
-    this.rightHitbox[2].update(this.x + 45, this.y + 77, cowboy.width - 80, cowboy.height - 115);
-    this.rightHitbox[3].update(this.x + 67, this.y + 130, cowboy.width - 155, cowboy.height - 140);
-    this.rightHitbox[4].update(this.x + 95, this.y + 130, cowboy.width - 155, cowboy.height - 140);
     this.y += this.speed;
     if (this.whatSide.equals("LEFT")) { // set barrel coordinates for barrel for instance of cowboy on the left side of the screen
       this.barrelX = this.x + 80;
@@ -223,6 +209,11 @@ class Cowboy {
     }
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
+      this.hitbox[0].update(this.x + 45, this.y + 27, this.cowboy.width - 95, this.cowboy.height - 130); // index hit box coordinates into unique objects in the array
+      this.hitbox[1].update(this.x + 20, this.y + 45, this.cowboy.width - 50, this.cowboy.height - 135);
+      this.hitbox[2].update(this.x + 35, this.y + 77, this.cowboy.width - 80, this.cowboy.height - 115);
+      this.hitbox[3].update(this.x + 87, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
+      this.hitbox[4].update(this.x + 60, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
       rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
       rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
       rect(this.x + 35, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
@@ -230,6 +221,11 @@ class Cowboy {
       rect(this.x + 60, this.y + 130, cowboy.width - 155, cowboy.height - 140); // left leg
     }
     if (this.whatSide.equals("RIGHT")) {
+      this.hitbox[0].update(this.x + 50, this.y + 27, this.cowboy.width - 95, this.cowboy.height - 130);
+      this.hitbox[1].update(this.x + 25, this.y + 45, this.cowboy.width - 50, this.cowboy.height - 135);
+      this.hitbox[2].update(this.x + 45, this.y + 77, this.cowboy.width - 80, this.cowboy.height - 115);
+      this.hitbox[3].update(this.x + 67, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
+      this.hitbox[4].update(this.x + 95, this.y + 130, this.cowboy.width - 155, this.cowboy.height - 140);
       rect(this.x + 50, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
       rect(this.x + 25, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
       rect(this.x + 45, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
@@ -267,8 +263,8 @@ class Cowboy {
 class Hitbox {
   public int x; // make ints public for easy access in hit detection
   public int y;
-  public int width;
-  public int height;
+  public int w;
+  public int h;
 
 
   public Hitbox() {/*Nothing to Construct*/}
@@ -276,8 +272,8 @@ class Hitbox {
   public void update(int bx, int by, int bw, int bh) { // take boxes x, y, width and height for assignment to variables with values unique to the particular object
     this.x = bx;
     this.y = by;
-    this.width = bw;
-    this.height = bh;
+    this.w = bw;
+    this.h = bh;
   }
 
   public void setPoint(int px, int py) { // save a collision point to the objecta as oppose to a full hitbox
