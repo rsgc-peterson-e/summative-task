@@ -17,11 +17,11 @@ public class cowboyDuels extends PApplet {
 /*
 Cowboy Duels
 Author: Ethan Peterson
-Revision Date: May 20, 2016
+Revision Date: May 22, 2016
 Description: The Cowboy Duels game is a 2 player game where cowboy characters scroll up and down the left and right
 sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
 The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
-your opponent shoots and vice versa. The game also has difficulty settings which will determine the speed of the bullet making  aiming easier or harder.
+your fired bullet leaves the screen or hits you enemy. The game also has difficulty settings which will determine the speed of the bullet making  aiming easier or harder.
 */
 
 //import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
@@ -31,6 +31,7 @@ Cowboy left;
 Cowboy right;
 Bullet rightBullet;
 Bullet leftBullet;
+HitBox test;
 int leftBulletX;
 int leftBulletY;
 
@@ -53,7 +54,8 @@ public void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
-  println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
+  test.updateBox(right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]);
+  //println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
 }
 
 public boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
@@ -214,6 +216,27 @@ class Cowboy {
       this.speed = this.down;
     }
   }
+}
+class HitBox {
+  public int x;
+  public int y;
+  public int hWidth;
+  public int hHeight;
+
+  public void updateBox(int hx, int hy, int hw, int hh) { // x, y, width and height of the HitBox rectangle
+    this.x = hx;
+    this.y = hy;
+    this.hWidth = hw;
+    this.hHeight = hh;
+  }
+
+  // public boolean bulletInCowboy(int px, int py)  { // take parameters for the bullet collision point being checked
+  //   if (px >= this.x && px <= this.x + this.hWidth && py >= this.y && py <= this.y + this.hHeight) { // taken with influence from my OnClickListener class in my ISP
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }
 class Resource {
   public PImage bg; // background image
