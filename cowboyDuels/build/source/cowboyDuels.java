@@ -62,8 +62,14 @@ public void draw() {
 public void hud() { // will draw important info onscreen like score
   textFont(r.score);
   fill(255);
-  text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585);
+  text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
   text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
+  if (!left.bulletFired) {
+    image(r.bullet, 100, 560);
+  }
+  if (!right.bulletFired) {
+    image(r.bullet, 650, 560);
+  }
 }
 
 
@@ -269,6 +275,7 @@ class Resource {
   public PImage bg; // background image
   public PImage leftCowBoy;
   public PImage rightCowBoy;
+  public PImage bullet;
   public PFont title;
   public PFont score;
   public int gameState = 1; // will determine what menu the game should be at
@@ -281,7 +288,8 @@ class Resource {
     leftCowBoy = loadImage("assets/img/leftCowboy.png");
     rightCowBoy = loadImage("assets/img/rightCowboy.png");
     title = createFont("assets/fonts/title.ttf", 32);
-    score = createFont("assets/fonts/score.ttf", 28);
+    score = createFont("assets/fonts/score.ttf", 64);
+    bullet = loadImage("assets/img/bullet.png");
   }
 }
   public void settings() {  size(800, 600); }

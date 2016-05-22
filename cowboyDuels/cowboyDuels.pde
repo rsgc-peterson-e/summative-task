@@ -48,6 +48,12 @@ void hud() { // will draw important info onscreen like score
   fill(255);
   text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
   text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
+  if (!left.bulletFired) {
+    image(r.bullet, 100, 560);
+  }
+  if (!right.bulletFired) {
+    image(r.bullet, 650, 560);
+  }
 }
 
 
