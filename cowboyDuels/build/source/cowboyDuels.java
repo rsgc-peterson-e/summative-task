@@ -29,22 +29,18 @@ your opponent shoots and vice versa. The game also has difficulty settings which
 Resource r = new Resource();
 Cowboy left;
 Cowboy right;
-Bullet[] leftAmmo = new Bullet[5];
-Bullet[] rightAmmo = new Bullet[5];
-int timesLeftFired = 0; // tracks the amount of time the left fire button has been pressed
-int timesRightFired = 0;
+Bullet rightBullet;
+Bullet leftBullet;
 
 
 public void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
   right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
+  leftBullet = new Bullet(left, 2);
+  rightBullet = new Bullet(right, 2);
   
   r.load();
   r.bg.resize(800, 600);
-  for (int i = 0; i < leftAmmo.length; i++) {
-    leftAmmo[i] = new Bullet(left, 2);
-    rightAmmo[i] = new Bullet(right, 2);
-  }
 }
 
 
@@ -54,20 +50,9 @@ public void draw() {
   left.input();
   right.move();
   right.input();
-  leftAmmo[timesLeftFired].fire();
-  rightAmmo[timesRightFired].fire();
+  leftBullet.fire();
+  rightBullet.fire();
 }
-
-
-// void keyTyped() { // runs when key is pressed and released
-//   if (key == left.fireButton) {
-//
-//     timesLeftFired++;
-//   }
-//   if (key == right.fireButton) {
-//     timesRightFired++;
-//   }
-// }
 class Bullet {
   int x;
   int y;
@@ -95,14 +80,19 @@ class Bullet {
     } else {
       if (cowboy.whatSide.equals("LEFT")) {
         this.x += this.speed;
+        if (this.x > 800) {
+          cowboy.bulletFired = false;
+        }
       }
       if (cowboy.whatSide.equals("RIGHT")) {
         this.x -= this.speed;
+        if (this.x < -50) {
+          cowboy.bulletFired = false;
+        }
       }
       image(this.bullet, this.x, cowboy.yOnFire);
-      if (this.x > 800) {
-        cowboy.bulletFired = false;
-      }
+      fill(255);
+      ellipse(this.x, cowboy.yOnFire, 5, 5);
     }
   }
 }
@@ -115,6 +105,7 @@ class Cowboy {
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
+  int[] hitBox = new int[4];
   private char downButton;
   private char upButton;
   private char fireButton;
@@ -155,10 +146,18 @@ class Cowboy {
     }
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
-      rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      hitBox[0] = this.x + 25;
+      hitBox[1] = this.y + 27;
+      hitBox[2] = cowboy.width - 45;
+      hitBox[3] = cowboy.height - 35;
+      rect(hitBox[0], hitBox[1], hitBox[2], hitBox[3]);
     }
     if (this.whatSide.equals("RIGHT")) {
-      rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      hitBox[0] = this.x + 20;
+      hitBox[1] = this.y + 27;
+      hitBox[2] = cowboy.width - 45;
+      hitBox[3] = cowboy.height - 35;
+      rect(hitBox[0], hitBox[1], hitBox[2], hitBox[3]);
     }
     changeDir();
   }
@@ -181,11 +180,24 @@ class Cowboy {
 
   private void changeDir() { // function will invert direction of cowboy to keeping it off screen
     if (this.y + 157 >= 575) {
-      this.speed = -1;
+      this.speed = this.up;
     }
     if (this.y + 30 <= 25) {
-      this.speed = 1;
+      this.speed = this.down;
     }
+  }
+}
+class HitBox { // simple class combining hitbox coordinates into one object to access the coordinates for hit detection
+  int x;
+  int y;
+  int w;
+  int h;
+
+  public void setBox(int hx, int hy, int hw, int hh) { // takes hitbox's coordinates so they can be used for hit detection later
+    this.x = hx;
+    this.y = hy;
+    this.w = hw;
+    this.h = hh;
   }
 }
 class Resource {

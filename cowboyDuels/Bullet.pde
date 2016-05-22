@@ -36,6 +36,8 @@ class Bullet {
         }
       }
       image(this.bullet, this.x, cowboy.yOnFire);
+      fill(255);
+      ellipse(this.x, cowboy.yOnFire, 5, 5);
     }
   }
 }
