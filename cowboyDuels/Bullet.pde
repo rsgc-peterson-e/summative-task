@@ -25,14 +25,17 @@ class Bullet {
     } else {
       if (cowboy.whatSide.equals("LEFT")) {
         this.x += this.speed;
+        if (this.x > 800) {
+          cowboy.bulletFired = false;
+        }
       }
       if (cowboy.whatSide.equals("RIGHT")) {
         this.x -= this.speed;
+        if (this.x < -50) {
+          cowboy.bulletFired = false;
+        }
       }
       image(this.bullet, this.x, cowboy.yOnFire);
-      if (this.x > 800) {
-        cowboy.bulletFired = false;
-      }
     }
   }
 }
