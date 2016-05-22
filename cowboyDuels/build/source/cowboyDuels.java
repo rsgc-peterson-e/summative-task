@@ -31,7 +31,8 @@ Cowboy left;
 Cowboy right;
 Bullet rightBullet;
 Bullet leftBullet;
-
+int leftBulletX;
+int leftBulletY;
 
 public void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
@@ -52,6 +53,18 @@ public void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
+  println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
+}
+
+public boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
+  if (px >= x && px <= x+width && py >= y && py <= y+height) { // taken with influence from my OnClickListener class in my ISP
+    return true;
+  } else {
+    return false;
+  }
+}
+
+public void mouseClicked() {
 }
 class Bullet {
   int x;
@@ -73,40 +86,38 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
-    //println(bulletInCowboy("RIGHT"));
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
       image(this.bullet, this.x, this.y);
-    } else {
-      if (cowboy.whatSide.equals("LEFT")) {
+    } else if (this.cowboy.bulletFired) {
+      this.cowboy.yOnFire = this.y;
+      if (this.cowboy.whatSide.equals("LEFT")) {
         this.x += this.speed;
         if (this.x > 800) {
           this.cowboy.bulletFired = false;
         }
       }
-      if (cowboy.whatSide.equals("RIGHT")) {
+      if (this.cowboy.whatSide.equals("RIGHT")) {
         this.x -= this.speed;
         if (this.x < -50) {
           this.cowboy.bulletFired = false;
         }
       }
-      image(this.bullet, this.x, cowboy.yOnFire);
+      image(this.bullet, this.x, this.cowboy.yOnFire);
       fill(255);
-      ellipse(this.x, cowboy.yOnFire, 5, 5);
-      if (bulletInCowboy("RIGHT")) {
-        println("TEST");
-      }
+      ellipse(this.x, this.cowboy.yOnFire, 5, 5);
     }
   }
 
-  private boolean bulletInCowboy(String side) {
-    if (side.equals("RIGHT") && mouseX >= cowboy.rightHitbox[0] && mouseX <= cowboy.rightHitbox[0] + cowboy.rightHitbox[2] && mouseY >= cowboy.rightHitbox[1] && mouseY <= cowboy.rightHitbox[1] + cowboy.rightHitbox[3]) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // private boolean bulletInCowboy(String side) {
+  //   if (side.equals("RIGHT") && this.x >= cowboy.rightHitbox[0] && this.x <= cowboy.rightHitbox[0] + cowboy.rightHitbox[2] && this.cowboy.yOnFire >= cowboy.rightHitbox[1]
+  //   && this.cowboy.yOnFire <= cowboy.rightHitbox[1] + cowboy.rightHitbox[3]) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }
 class Cowboy {
   private int x;
@@ -150,6 +161,14 @@ class Cowboy {
   public void move() { // take cowboy image as input will also needs to run in a loop
     cowboy.resize(256/2, 336/2);
     image(cowboy, this.x, this.y);
+    rightHitbox[0] = this.x + 20; // index and update respective cowboy hitbox | x coordinate
+    rightHitbox[1] = this.y + 27; // y coordinate
+    rightHitbox[2] = cowboy.width - 45; // width
+    rightHitbox[3] = cowboy.height - 35; // height
+    leftHitbox[0] = this.x + 25;
+    leftHitbox[1] = this.y + 27;
+    leftHitbox[2] = cowboy.width - 45;
+    leftHitbox[3] = cowboy.height - 35;
     this.y += this.speed;
     if (this.whatSide.equals("LEFT")) { // set barrel coordinates for barrel for instance of cowboy on the left side of the screen
       this.barrelX = this.x + 80;
@@ -161,18 +180,10 @@ class Cowboy {
     }
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
-      leftHitbox[0] = this.x + 25;
-      leftHitbox[1] = this.y + 27;
-      leftHitbox[2] = cowboy.width - 45;
-      leftHitbox[3] = cowboy.height - 35;
       //leftHitbox.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }
     if (this.whatSide.equals("RIGHT")) {
-      rightHitbox[0] = this.x + 20;
-      rightHitbox[1] = this.y + 27;
-      rightHitbox[2] = cowboy.width - 45;
-      rightHitbox[3] = cowboy.height - 35;
       //rightHitbox.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }
@@ -202,24 +213,6 @@ class Cowboy {
     if (this.y + 30 <= 25) {
       this.speed = this.down;
     }
-  }
-}
-class HitBox { // simple class combining hitbox coordinates into one object to access the coordinates for hit detection
-  public int x;
-  public int y;
-  public int w;
-  public int h;
-
-  public void setBox(int hx, int hy, int hw, int hh) { // takes hitbox's coordinates so they can be used for hit detection later
-    this.x = hx;
-    this.y = hy;
-    this.w = hw;
-    this.h = hh;
-  }
-
-  public void setPoint(int hx, int hy) {
-    this.x = hx;
-    this.y = hy;
   }
 }
 class Resource {

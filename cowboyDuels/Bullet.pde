@@ -18,35 +18,36 @@ class Bullet {
 
 
   public void fire() { // called in a loop where the bullet image is moved across screen
-    //println(bulletInCowboy("RIGHT"));
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
       image(this.bullet, this.x, this.y);
-    } else {
-      if (cowboy.whatSide.equals("LEFT")) {
+    } else if (this.cowboy.bulletFired) {
+      this.cowboy.yOnFire = this.y;
+      if (this.cowboy.whatSide.equals("LEFT")) {
         this.x += this.speed;
         if (this.x > 800) {
           this.cowboy.bulletFired = false;
         }
       }
-      if (cowboy.whatSide.equals("RIGHT")) {
+      if (this.cowboy.whatSide.equals("RIGHT")) {
         this.x -= this.speed;
         if (this.x < -50) {
           this.cowboy.bulletFired = false;
         }
       }
-      image(this.bullet, this.x, cowboy.yOnFire);
+      image(this.bullet, this.x, this.cowboy.yOnFire);
       fill(255);
-      ellipse(this.x, cowboy.yOnFire, 5, 5);
+      ellipse(this.x, this.cowboy.yOnFire, 5, 5);
     }
   }
 
-  private boolean bulletInCowboy(String side) {
-    if (side.equals("RIGHT") && mouseX >= cowboy.rightHitbox[0] && mouseX <= cowboy.rightHitbox[0] + cowboy.rightHitbox[2] && mouseY >= cowboy.rightHitbox[1] && mouseY <= cowboy.rightHitbox[1] + cowboy.rightHitbox[3]) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // private boolean bulletInCowboy(String side) {
+  //   if (side.equals("RIGHT") && this.x >= cowboy.rightHitbox[0] && this.x <= cowboy.rightHitbox[0] + cowboy.rightHitbox[2] && this.cowboy.yOnFire >= cowboy.rightHitbox[1]
+  //   && this.cowboy.yOnFire <= cowboy.rightHitbox[1] + cowboy.rightHitbox[3]) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }

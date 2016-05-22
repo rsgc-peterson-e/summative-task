@@ -40,6 +40,14 @@ class Cowboy {
   public void move() { // take cowboy image as input will also needs to run in a loop
     cowboy.resize(256/2, 336/2);
     image(cowboy, this.x, this.y);
+    rightHitbox[0] = this.x + 20; // index and update respective cowboy hitbox | x coordinate
+    rightHitbox[1] = this.y + 27; // y coordinate
+    rightHitbox[2] = cowboy.width - 45; // width
+    rightHitbox[3] = cowboy.height - 35; // height
+    leftHitbox[0] = this.x + 25;
+    leftHitbox[1] = this.y + 27;
+    leftHitbox[2] = cowboy.width - 45;
+    leftHitbox[3] = cowboy.height - 35;
     this.y += this.speed;
     if (this.whatSide.equals("LEFT")) { // set barrel coordinates for barrel for instance of cowboy on the left side of the screen
       this.barrelX = this.x + 80;
@@ -51,18 +59,10 @@ class Cowboy {
     }
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
-      leftHitbox[0] = this.x + 25;
-      leftHitbox[1] = this.y + 27;
-      leftHitbox[2] = cowboy.width - 45;
-      leftHitbox[3] = cowboy.height - 35;
       //leftHitbox.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }
     if (this.whatSide.equals("RIGHT")) {
-      rightHitbox[0] = this.x + 20;
-      rightHitbox[1] = this.y + 27;
-      rightHitbox[2] = cowboy.width - 45;
-      rightHitbox[3] = cowboy.height - 35;
       //rightHitbox.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
     }

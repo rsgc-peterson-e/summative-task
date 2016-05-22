@@ -15,7 +15,8 @@ Cowboy left;
 Cowboy right;
 Bullet rightBullet;
 Bullet leftBullet;
-
+int leftBulletX;
+int leftBulletY;
 
 void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
@@ -36,4 +37,16 @@ void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
+  println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
+}
+
+boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
+  if (px >= x && px <= x+width && py >= y && py <= y+height) { // taken with influence from my OnClickListener class in my ISP
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void mouseClicked() {
 }
