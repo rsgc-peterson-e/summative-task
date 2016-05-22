@@ -53,7 +53,10 @@ public void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
-  println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
+  //println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
+  //println(left.test.y);
+  collision(right.rightHitbox, leftBullet);
+  collision(left.leftHitbox, rightBullet);
 }
 
 public boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
@@ -64,8 +67,12 @@ public boolean bulletInCowboy(int px, int py, int x, int y, int width, int heigh
   }
 }
 
-public void collision() { // bullet collision with cowboy's will be handled here
-  
+public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
+  for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
+    if (bulletInCowboy(b.x, b.y, h[i].x, h[i].y, h[i].width, h[i].height)) {
+      println("HIT");
+    }
+  }
 }
 class Bullet {
   int x;
@@ -129,10 +136,10 @@ class Cowboy {
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
-  public int[] leftHitbox = new int[4];
-  public int[] rightHitbox = new int[4];
-  // HitBox leftHitbox = new HitBox();
-  // HitBox rightHitbox = new HitBox();
+  // public int[] leftHitbox = new int[4];
+  // public int[] rightHitbox = new int[4];
+  public Hitbox[] leftHitbox = new Hitbox[5];
+  public Hitbox[] rightHitbox = new Hitbox[5];
   private char downButton;
   private char upButton;
   private char fireButton;
@@ -156,20 +163,35 @@ class Cowboy {
     this.whatSide = side;
     this.up = 0 - scrollSpeed;
     this.down = scrollSpeed;
+    for (int i = 0; i < leftHitbox.length; i++) { // for loop to construct array of Hitbox objects
+      this.leftHitbox[i] = new Hitbox();
+      this.rightHitbox[i] = new Hitbox();
+    }
   }
 
 
   public void move() { // take cowboy image as input will also needs to run in a loop
-    cowboy.resize(256/2, 336/2);
+    this.cowboy.resize(256/2, 336/2);
     image(cowboy, this.x, this.y);
-    rightHitbox[0] = this.x + 20; // index and update respective cowboy hitbox | x coordinate
-    rightHitbox[1] = this.y + 27; // y coordinate
-    rightHitbox[2] = cowboy.width - 45; // width
-    rightHitbox[3] = cowboy.height - 35; // height
-    leftHitbox[0] = this.x + 25;
-    leftHitbox[1] = this.y + 27;
-    leftHitbox[2] = cowboy.width - 45;
-    leftHitbox[3] = cowboy.height - 35;
+    // this.rightHitbox[0] = this.x + 20; // index and update respective cowboy hitbox | x coordinate
+    // this.rightHitbox[1] = this.y + 27; // y coordinate
+    // this.rightHitbox[2] = this.cowboy.width - 45; // width
+    // this.rightHitbox[3] = this.cowboy.height - 35; // height
+    // this.leftHitbox[0] = this.x + 25;
+    // this.leftHitbox[1] = this.y + 27;
+    // this.leftHitbox[2] = this.cowboy.width - 45;
+    // this.leftHitbox[3] = this.cowboy.height - 35;
+    this.leftHitbox[0].update(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130); // index hit box coordinates into unique objects in the array
+    this.leftHitbox[1].update(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135);
+    this.leftHitbox[2].update(this.x + 35, this.y + 77, cowboy.width - 80, cowboy.height - 115);
+    this.leftHitbox[3].update(this.x + 87, this.y + 130, cowboy.width - 155, cowboy.height - 140);
+    this.leftHitbox[4].update(this.x + 60, this.y + 130, cowboy.width - 155, cowboy.height - 140);
+    // now right side hitboxes
+    this.rightHitbox[0].update(this.x + 50, this.y + 27, cowboy.width - 95, cowboy.height - 130);
+    this.rightHitbox[1].update(this.x + 25, this.y + 45, cowboy.width - 50, cowboy.height - 135);
+    this.rightHitbox[2].update(this.x + 45, this.y + 77, cowboy.width - 80, cowboy.height - 115);
+    this.rightHitbox[3].update(this.x + 67, this.y + 130, cowboy.width - 155, cowboy.height - 140);
+    this.rightHitbox[4].update(this.x + 95, this.y + 130, cowboy.width - 155, cowboy.height - 140);
     this.y += this.speed;
     if (this.whatSide.equals("LEFT")) { // set barrel coordinates for barrel for instance of cowboy on the left side of the screen
       this.barrelX = this.x + 80;
@@ -181,7 +203,6 @@ class Cowboy {
     }
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
-      //leftHitbox.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
       rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
       rect(this.x + 35, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
@@ -189,8 +210,6 @@ class Cowboy {
       rect(this.x + 60, this.y + 130, cowboy.width - 155, cowboy.height - 140); // left leg
     }
     if (this.whatSide.equals("RIGHT")) {
-      //rightHitbox.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
-      // rect(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
       rect(this.x + 50, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
       rect(this.x + 25, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
       rect(this.x + 45, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
@@ -223,6 +242,21 @@ class Cowboy {
     if (this.y + 30 <= 25) {
       this.speed = this.down;
     }
+  }
+}
+class Hitbox {
+  public int x; // make ints public for easy access in hit detection
+  public int y;
+  public int width;
+  public int height;
+
+  public Hitbox() {/*Nothing to Construct*/}
+
+  public void update(int bx, int by, int bw, int bh) { // take boxes x, y, width and height for assignment to variables with values unique to the particular object
+    this.x = bx;
+    this.y = by;
+    this.width = bw;
+    this.height = bh;
   }
 }
 class Resource {

@@ -37,7 +37,8 @@ void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
-  println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
+  collision(right.rightHitbox, leftBullet);
+  collision(left.leftHitbox, rightBullet);
 }
 
 boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
@@ -48,6 +49,10 @@ boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { /
   }
 }
 
-void collision() { // bullet collision with cowboy's will be handled here
-  
+void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
+  for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
+    if (bulletInCowboy(b.x, b.y, h[i].x, h[i].y, h[i].width, h[i].height)) { // check each hitbox in the array to see if one is in contact with the bullet
+      println("HIT");
+    }
+  }
 }
