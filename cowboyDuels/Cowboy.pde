@@ -60,7 +60,8 @@ class Cowboy {
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
       //leftHitbox.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
-      rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130);
+      rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135);
     }
     if (this.whatSide.equals("RIGHT")) {
       //rightHitbox.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);

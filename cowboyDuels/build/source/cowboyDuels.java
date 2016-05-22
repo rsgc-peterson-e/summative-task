@@ -31,7 +31,6 @@ Cowboy left;
 Cowboy right;
 Bullet rightBullet;
 Bullet leftBullet;
-HitBox test;
 int leftBulletX;
 int leftBulletY;
 
@@ -54,8 +53,7 @@ public void draw() {
   right.input();
   leftBullet.fire();
   rightBullet.fire();
-  test.updateBox(right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]);
-  //println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
+  println(bulletInCowboy(leftBullet.x, leftBullet.y, right.rightHitbox[0], right.rightHitbox[1], right.rightHitbox[2], right.rightHitbox[3]));
 }
 
 public boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
@@ -66,7 +64,8 @@ public boolean bulletInCowboy(int px, int py, int x, int y, int width, int heigh
   }
 }
 
-public void mouseClicked() {
+public void collision() { // bullet collision with cowboy's will be handled here
+  
 }
 class Bullet {
   int x;
@@ -183,7 +182,8 @@ class Cowboy {
     fill(255, 0, 0, 60);
     if (this.whatSide.equals("LEFT")) {
       //leftHitbox.setBox(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
-      rect(this.x + 25, this.y + 27, cowboy.width - 45, cowboy.height - 35);
+      rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130);
+      rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135);
     }
     if (this.whatSide.equals("RIGHT")) {
       //rightHitbox.setBox(this.x + 20, this.y + 27, cowboy.width - 45, cowboy.height - 35);
@@ -216,27 +216,6 @@ class Cowboy {
       this.speed = this.down;
     }
   }
-}
-class HitBox {
-  public int x;
-  public int y;
-  public int hWidth;
-  public int hHeight;
-
-  public void updateBox(int hx, int hy, int hw, int hh) { // x, y, width and height of the HitBox rectangle
-    this.x = hx;
-    this.y = hy;
-    this.hWidth = hw;
-    this.hHeight = hh;
-  }
-
-  // public boolean bulletInCowboy(int px, int py)  { // take parameters for the bullet collision point being checked
-  //   if (px >= this.x && px <= this.x + this.hWidth && py >= this.y && py <= this.y + this.hHeight) { // taken with influence from my OnClickListener class in my ISP
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 }
 class Resource {
   public PImage bg; // background image
