@@ -55,6 +55,15 @@ public void draw() {
   rightBullet.fire();
   collision(right.hitbox, leftBullet);
   collision(left.hitbox, rightBullet);
+  hud();
+}
+
+
+public void hud() { // will draw important info onscreen like score
+  textFont(r.score);
+  fill(255);
+  text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585);
+  text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
 }
 
 
@@ -85,8 +94,7 @@ public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's 
   }
 }
 
-
-public void hud() { // will draw important info onscreen like score
+public void drawGame(int g) { // will take gamestate as param and run the corresponding the code
 
 }
 class Bullet {
@@ -117,17 +125,6 @@ class Bullet {
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
-      image(this.bullet, this.x, this.y);
-      fill(255);
-      if (this.cowboy.whatSide.equals("LEFT")) {
-        ellipse(this.x + 50, this.y + 23, 5, 5); // draw collision points onscreen for testing purposes
-        ellipse(this.x + 35, this.y + 18, 5, 5);
-        ellipse(this.x + 35, this.y + 30, 5, 5);
-      } else {
-        ellipse(this.x, this.y + 23, 5, 5);
-        ellipse(this.x + 15, this.y + 18, 5, 5);
-        ellipse(this.x + 15, this.y + 30, 5, 5);
-      }
     } else if (this.cowboy.bulletFired) {
       this.cowboy.yOnFire = this.y;
       if (this.cowboy.whatSide.equals("LEFT")) {
@@ -211,11 +208,6 @@ class Cowboy {
       this.hitbox[2].update(this.x + 35, this.y + 77, this.cowboy.width - 80, this.cowboy.height - 115);
       this.hitbox[3].update(this.x + 60, this.y + 130, 27, cowboy.height - 140);
       this.hitbox[4].update(this.x + 33, this.y + 130, 27, cowboy.height - 140);
-      rect(this.x + 45, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
-      rect(this.x + 20, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
-      rect(this.x + 35, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
-      rect(this.x + 60, this.y + 130, 27, cowboy.height - 140); // right leg
-      rect(this.x + 33, this.y + 130, 27, cowboy.height - 140); // left leg
     }
     if (this.whatSide.equals("RIGHT")) {
       this.hitbox[0].update(this.x + 50, this.y + 27, this.cowboy.width - 95, this.cowboy.height - 130);
@@ -223,11 +215,6 @@ class Cowboy {
       this.hitbox[2].update(this.x + 45, this.y + 77, this.cowboy.width - 80, this.cowboy.height - 115);
       this.hitbox[3].update(this.x + 40, this.y + 130, 27, cowboy.height - 140);
       this.hitbox[4].update(this.x + 69, this.y + 130, 27, cowboy.height - 140);
-      rect(this.x + 50, this.y + 27, cowboy.width - 95, cowboy.height - 130); // hat hitbox
-      rect(this.x + 25, this.y + 45, cowboy.width - 50, cowboy.height - 135); // hat tip hitbox
-      rect(this.x + 45, this.y + 77, cowboy.width - 80, cowboy.height - 115); // main  torso hitbox
-      rect(this.x + 40, this.y + 130, 27, cowboy.height - 140); // left leg hitbox
-      rect(this.x + 69, this.y + 130, 27, cowboy.height - 140); // right leg hitbox
     }
     changeDir();
   }
@@ -282,6 +269,8 @@ class Resource {
   public PImage bg; // background image
   public PImage leftCowBoy;
   public PImage rightCowBoy;
+  public PFont title;
+  public PFont score;
   public int gameState = 1; // will determine what menu the game should be at
   public int leftScore = 0; // score variables for left and right players
   public int rightScore = 0;
@@ -291,6 +280,8 @@ class Resource {
     bg = loadImage("assets/img/testBg.png");
     leftCowBoy = loadImage("assets/img/leftCowboy.png");
     rightCowBoy = loadImage("assets/img/rightCowboy.png");
+    title = createFont("assets/fonts/title.ttf", 32);
+    score = createFont("assets/fonts/score.ttf", 28);
   }
 }
   public void settings() {  size(800, 600); }

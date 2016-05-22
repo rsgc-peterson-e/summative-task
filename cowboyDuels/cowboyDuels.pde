@@ -39,6 +39,15 @@ void draw() {
   rightBullet.fire();
   collision(right.hitbox, leftBullet);
   collision(left.hitbox, rightBullet);
+  hud();
+}
+
+
+void hud() { // will draw important info onscreen like score
+  textFont(r.score);
+  fill(255);
+  text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
+  text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
 }
 
 
@@ -69,7 +78,6 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
   }
 }
 
-
-void hud() { // will draw important info onscreen like score
+void drawGame(int g) { // will take gamestate as param and run the corresponding the code
 
 }

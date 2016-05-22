@@ -26,17 +26,6 @@ class Bullet {
     if (!cowboy.bulletFired) {
       this.y = cowboy.barrelY;
       this.x = cowboy.barrelX;
-      image(this.bullet, this.x, this.y);
-      fill(255);
-      if (this.cowboy.whatSide.equals("LEFT")) {
-        ellipse(this.x + 50, this.y + 23, 5, 5); // draw collision points onscreen for testing purposes
-        ellipse(this.x + 35, this.y + 18, 5, 5);
-        ellipse(this.x + 35, this.y + 30, 5, 5);
-      } else {
-        ellipse(this.x, this.y + 23, 5, 5);
-        ellipse(this.x + 15, this.y + 18, 5, 5);
-        ellipse(this.x + 15, this.y + 30, 5, 5);
-      }
     } else if (this.cowboy.bulletFired) {
       this.cowboy.yOnFire = this.y;
       if (this.cowboy.whatSide.equals("LEFT")) {
