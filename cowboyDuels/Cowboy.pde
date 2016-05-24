@@ -4,6 +4,7 @@ class Cowboy {
   private int speed = 1;
   private int up;
   private int down;
+  public int maxScore = 10;
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
@@ -13,6 +14,7 @@ class Cowboy {
   private char fireButton;
   String whatSide; // stores what side the cowboy is on for the class
   boolean bulletFired; // true if the fire button specified in constructor has been pressed
+  boolean won;
   PImage cowboy;
 
 
