@@ -36,8 +36,9 @@ Bullet leftBullet;
 int leftBulletX;
 int leftBulletY;
 Minim minim = new Minim(this);
-AudioSnippet background;
-AudioSnippet hit;
+AudioSnippet background; // background western 8 bit music
+AudioSnippet hit; // wounded sound
+AudioSnippet shot; // gun fire sound
 
 
 public void setup() {
@@ -82,6 +83,13 @@ public boolean bulletInCowboy(int px, int py, int x, int y, int width, int heigh
   }
 }
 
+public boolean mouseOverButton(int x, int y, int width, int height) {
+  if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY < y + height) {
+    return true; // return true if the mouse is within the specified rectangle
+  } else { // return false if the mouse is not within the given rectangle
+    return false;
+  }
+}
 
 public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
@@ -154,6 +162,11 @@ public void drawGame(int g) { // will take gamestate as param and run the corres
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
     text(left.winOrLose, 50, height/2.5f - textWidth(left.winOrLose)/2.5f);
     text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5f - textWidth(right.winOrLose)/2.5f);
+    noFill();
+    rect(width/2 - 100, height/2, 200, 40);
+    fill(255);
+    textSize(32);
+    text("Play Again", width/2 - 60, height/2);
   }
 }
 

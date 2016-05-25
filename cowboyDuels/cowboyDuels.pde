@@ -65,14 +65,6 @@ boolean bulletInCowboy(int px, int py, int x, int y, int width, int height) { //
   }
 }
 
-boolean mouseOverButton(int x, int y, int width, int height) {
-  if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY < y + height) {
-    return true; // return true if the mouse is within the specified rectangle
-  } else { // return false if the mouse is not within the given rectangle
-    return false;
-  }
-}
-
 void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
     for (int j = 0; j < b.points.length; j++) { // create second for loop that only runs the length of the points array to prevent Array out of bounds
@@ -144,6 +136,7 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
     text(left.winOrLose, 50, height/2.5 - textWidth(left.winOrLose)/2.5);
     text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5 - textWidth(right.winOrLose)/2.5);
+    noFill();
   }
 }
 
