@@ -1,7 +1,7 @@
 /*
 Cowboy Duels
  Author: Ethan Peterson
- Revision Date: May 24, 2016
+ Revision Date: May 25, 2016
  Description: The Cowboy Duels game is a 2 player game where cowboy characters scroll up and down the left and right
  sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
  The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
@@ -18,8 +18,9 @@ Bullet leftBullet;
 int leftBulletX;
 int leftBulletY;
 Minim minim = new Minim(this);
-AudioSnippet background;
-AudioSnippet hit;
+AudioSnippet background; // background western 8 bit music
+AudioSnippet hit; // wounded sound
+AudioSnippet shot; // gun fire sound
 
 
 void setup() {
@@ -64,6 +65,13 @@ boolean bulletInCowboy(int px, int py, int x, int y, int width, int height) { //
   }
 }
 
+boolean mouseOverButton(int x, int y, int width, int height) {
+  if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY < y + height) {
+    return true; // return true if the mouse is within the specified rectangle
+  } else { // return false if the mouse is not within the given rectangle
+    return false;
+  }
+}
 
 void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
@@ -73,12 +81,22 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
           r.leftScore++; // increase the players score by 1 if they hit the other
           b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
           println("LEFT SCORE: " + r.leftScore);
-          hit.play();
+          hit.play(); // play a sound when a player is hit
+          if (r.leftScore == r.maxScore) {
+            b.cowboy.winOrLose = "Winner";
+            r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
+            println("LEFT: " + b.cowboy.winOrLose);
+          }
         } else if (b.cowboy.whatSide.equals("RIGHT") && b.cowboy.bulletFired) {
           r.rightScore++;
           b.cowboy.bulletFired = false;
           println("RIGHT SCORE: " + r.rightScore);
           hit.play();
+          if (r.leftScore == r.maxScore) {
+            b.cowboy.winOrLose = "Winner";
+            r.gameState = 2;
+            println("RIGHT: " + b.cowboy.winOrLose);
+          }
         }
       }
     }
@@ -87,18 +105,20 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
 
 
 void audio() { // plays audio for the game and updates audio snippets by rewinding them after they have been played
-  background.play(); // loops the background audio
-  if (!background.isPlaying()) {
-    background.rewind();
-  }
-  if (!hit.isPlaying()) { // rewind the file when it is not playing so when a cowboy gets hit by a bullet the sound plays from the beginning
-    hit.rewind();
+  if (r.gameState == 1) { // play the audio below only if the game is being played
+    background.play(); // loops the background audio
+    if (!background.isPlaying()) {
+      background.rewind();
+    }
+    if (!hit.isPlaying()) { // rewind the file when it is not playing so when a cowboy gets hit by a bullet the sound plays from the beginning
+      hit.rewind();
+    }
   }
 }
 
 
 void drawGame(int g) { // will take gamestate as param and run the corresponding the code
-  if (g == -1) {
+  if (g == -1) { // pause menu
   }
   if (g == 0) { // will draw start screen
   }
@@ -119,8 +139,11 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     textSize(64);
     text("Game Over", width/2 - textWidth("Game Over")/2, 100);
     image(r.leftCowBoy, 0, height/2 - r.leftCowBoy.height/2);
+    image(r.rightCowBoy, 550, height/2 - r.rightCowBoy.height/2);
     text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
+    text(left.winOrLose, 50, height/2.5 - textWidth(left.winOrLose)/2.5);
+    text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5 - textWidth(right.winOrLose)/2.5);
   }
 }
 

@@ -14,7 +14,7 @@ class Cowboy {
   private char fireButton;
   String whatSide; // stores what side the cowboy is on for the class
   boolean bulletFired; // true if the fire button specified in constructor has been pressed
-  boolean won;
+  String winOrLose = "Loser"; // will have whether the cowboy has won or lost at the end of the game stays at loser originally and is change iif the particular cowboy is the winner
   PImage cowboy;
 
 

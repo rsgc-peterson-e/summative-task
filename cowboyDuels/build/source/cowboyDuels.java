@@ -3,6 +3,8 @@ import processing.data.*;
 import processing.event.*; 
 import processing.opengl.*; 
 
+import ddf.minim.*; 
+
 import java.util.HashMap; 
 import java.util.ArrayList; 
 import java.io.File; 
@@ -16,15 +18,15 @@ public class cowboyDuels extends PApplet {
 
 /*
 Cowboy Duels
-Author: Ethan Peterson
-Revision Date: May 22, 2016
-Description: The Cowboy Duels game is a 2 player game where cowboy characters scroll up and down the left and right
-sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
-The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
-your fired bullet leaves the screen or hits you enemy. The game also has difficulty settings which will determine the speed of the bullet making  aiming easier or harder.
-*/
+ Author: Ethan Peterson
+ Revision Date: May 25, 2016
+ Description: The Cowboy Duels game is a 2 player game where cowboy characters scroll up and down the left and right
+ sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
+ The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
+ your fired bullet leaves the screen or hits you enemy. The game also has difficulty settings which will determine the speed of the bullet making  aiming easier or harder.
+ */
 
-//import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
+ // 3rd party audio library downloaded from processing via library wizard
 
 Resource r = new Resource();
 Cowboy left;
@@ -33,6 +35,10 @@ Bullet rightBullet;
 Bullet leftBullet;
 int leftBulletX;
 int leftBulletY;
+Minim minim = new Minim(this);
+AudioSnippet background;
+AudioSnippet hit;
+
 
 public void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
@@ -42,20 +48,15 @@ public void setup() {
   
   r.load();
   r.bg.resize(800, 600);
+  background = minim.loadSnippet("assets/audio/background.mp3");
+  hit = minim.loadSnippet("assets/audio/hit.mp3");
 }
 
 
 public void draw() {
   image(r.bg, 0, 0);
-  left.move();
-  left.input();
-  right.move();
-  right.input();
-  leftBullet.fire();
-  rightBullet.fire();
-  collision(right.hitbox, leftBullet);
-  collision(left.hitbox, rightBullet);
-  hud();
+  audio();
+  drawGame(r.gameState);
 }
 
 
@@ -73,7 +74,7 @@ public void hud() { // will draw important info onscreen like score
 }
 
 
-public boolean bulletInCowboy(int px, int py, int x, int y, int width, int height)  { // take parameters for the bullet collision point being checked
+public boolean bulletInCowboy(int px, int py, int x, int y, int width, int height) { // take parameters for the bullet collision point being checked
   if (px >= x && px <= x+width && py >= y && py <= y+height) { // taken with influence from my OnClickListener class in my ISP
     return true;
   } else {
@@ -90,18 +91,80 @@ public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's 
           r.leftScore++; // increase the players score by 1 if they hit the other
           b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
           println("LEFT SCORE: " + r.leftScore);
+          hit.play(); // play a sound when a player is hit
+          if (r.leftScore == r.maxScore) {
+            b.cowboy.winOrLose = "Winner";
+            r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
+            println("LEFT: " + b.cowboy.winOrLose);
+          }
         } else if (b.cowboy.whatSide.equals("RIGHT") && b.cowboy.bulletFired) {
           r.rightScore++;
           b.cowboy.bulletFired = false;
           println("RIGHT SCORE: " + r.rightScore);
+          hit.play();
+          if (r.leftScore == r.maxScore) {
+            b.cowboy.winOrLose = "Winner";
+            r.gameState = 2;
+            println("RIGHT: " + b.cowboy.winOrLose);
+          }
         }
       }
     }
   }
 }
 
-public void drawGame(int g) { // will take gamestate as param and run the corresponding the code
 
+public void audio() { // plays audio for the game and updates audio snippets by rewinding them after they have been played
+  if (r.gameState == 1) { // play the audio below only if the game is being played
+    background.play(); // loops the background audio
+    if (!background.isPlaying()) {
+      background.rewind();
+    }
+    if (!hit.isPlaying()) { // rewind the file when it is not playing so when a cowboy gets hit by a bullet the sound plays from the beginning
+      hit.rewind();
+    }
+  }
+}
+
+
+public void drawGame(int g) { // will take gamestate as param and run the corresponding the code
+  if (g == -1) { // pause menu
+  }
+  if (g == 0) { // will draw start screen
+  }
+  if (g == 1) { // will draw game
+    left.move();
+    left.input();
+    right.move();
+    right.input();
+    leftBullet.fire();
+    rightBullet.fire();
+    collision(right.hitbox, leftBullet);
+    collision(left.hitbox, rightBullet);
+    hud();
+  }
+  if (g == 2) { // game over screen
+    textFont(r.title);
+    fill(255);
+    textSize(64);
+    text("Game Over", width/2 - textWidth("Game Over")/2, 100);
+    image(r.leftCowBoy, 0, height/2 - r.leftCowBoy.height/2);
+    image(r.rightCowBoy, 550, height/2 - r.rightCowBoy.height/2);
+    text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
+    text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
+    text(left.winOrLose, 50, height/2.5f - textWidth(left.winOrLose)/2.5f);
+    text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5f - textWidth(right.winOrLose)/2.5f);
+  }
+}
+
+
+public void keyTyped() { // for testing between modes
+  if (key == ' ') {
+    r.gameState++;
+  }
+  if (key == 'h') {
+    r.gameState--;
+  }
 }
 class Bullet {
   int x;
@@ -162,6 +225,7 @@ class Cowboy {
   private int speed = 1;
   private int up;
   private int down;
+  public int maxScore = 10;
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
@@ -171,6 +235,7 @@ class Cowboy {
   private char fireButton;
   String whatSide; // stores what side the cowboy is on for the class
   boolean bulletFired; // true if the fire button specified in constructor has been pressed
+  String winOrLose = "Loser"; // will have whether the cowboy has won or lost at the end of the game stays at loser originally and is change iif the particular cowboy is the winner
   PImage cowboy;
 
 
@@ -281,6 +346,7 @@ class Resource {
   public int gameState = 1; // will determine what menu the game should be at
   public int leftScore = 0; // score variables for left and right players
   public int rightScore = 0;
+  public int maxScore = 2;
 
 
   public void load() { // loads assets for the game called once in setup
