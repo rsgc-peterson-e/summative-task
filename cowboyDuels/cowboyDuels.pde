@@ -43,6 +43,25 @@ void draw() {
 }
 
 
+void keyTyped() { // for testing between modes
+  if (r.gameState == 2) { // if the game is over
+    if (key == ' ') {
+      restartGame();
+      r.gameState = 1;
+    }
+    if (key == ENTER) {
+      r.gameState = 0;
+    }
+  }
+}
+
+void restartGame() { // cleans up objects and gets them ready for a new game after the user decides to play another game
+  left.cleanUp();
+  right.cleanUp();
+  r.leftScore = 0;
+  r.rightScore = 0;
+}
+
 void hud() { // will draw important info onscreen like score
   textFont(r.score);
   fill(255);
@@ -64,6 +83,7 @@ boolean bulletInCowboy(int px, int py, int x, int y, int width, int height) { //
     return false;
   }
 }
+
 
 void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
@@ -136,16 +156,8 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
     text(left.winOrLose, 50, height/2.5 - textWidth(left.winOrLose)/2.5);
     text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5 - textWidth(right.winOrLose)/2.5);
-    noFill();
-  }
-}
-
-
-void keyTyped() { // for testing between modes
-  if (key == ' ') {
-    r.gameState++;
-  }
-  if (key == 'h') {
-    r.gameState--;
+    textSize(20);
+    text("Press SPACE to Play Again", width/2 - textWidth("Press SPACE to Play Again")/2, 225);
+    text("Press ENTER to Return to Main Menu", width/2 - textWidth("Press ENTER to Return to Main Menu")/2, 300);
   }
 }

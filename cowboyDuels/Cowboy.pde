@@ -5,6 +5,8 @@ class Cowboy {
   private int up;
   private int down;
   public int maxScore = 10;
+  private int startingX;
+  private int startingY;
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
@@ -21,6 +23,8 @@ class Cowboy {
   public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
     this.x = startX; // set starting coordinates of the cowboy unique to any particular instance of the class using this
     this.y = startY;
+    this.startingX = startX;
+    this.startingY = startY;
     this.downButton = d; // map up and down buttons to specified characters in the constructor
     this.upButton = u;
     this.fireButton = f;
@@ -92,5 +96,12 @@ class Cowboy {
     if (this.y + 30 <= 25) {
       this.speed = this.down;
     }
+  }
+
+
+  public void cleanUp() {
+    this.x = this.startingX;
+    this.y = this.startingY;
+    this.bulletFired = false;
   }
 }

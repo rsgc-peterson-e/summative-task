@@ -61,6 +61,25 @@ public void draw() {
 }
 
 
+public void keyTyped() { // for testing between modes
+  if (r.gameState == 2) { // if the game is over
+    if (key == ' ') {
+      restartGame();
+      r.gameState = 1;
+    }
+    if (key == ENTER) {
+      r.gameState = 0;
+    }
+  }
+}
+
+public void restartGame() { // cleans up objects and gets them ready for a new game after the user decides to play another game
+  left.cleanUp();
+  right.cleanUp();
+  r.leftScore = 0;
+  r.rightScore = 0;
+}
+
 public void hud() { // will draw important info onscreen like score
   textFont(r.score);
   fill(255);
@@ -83,13 +102,6 @@ public boolean bulletInCowboy(int px, int py, int x, int y, int width, int heigh
   }
 }
 
-public boolean mouseOverButton(int x, int y, int width, int height) {
-  if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY < y + height) {
-    return true; // return true if the mouse is within the specified rectangle
-  } else { // return false if the mouse is not within the given rectangle
-    return false;
-  }
-}
 
 public void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be handled here
   for (int i = 0; i < h.length; i++) { // go through hitbox array checking for collisions with any of the boxes
@@ -162,21 +174,9 @@ public void drawGame(int g) { // will take gamestate as param and run the corres
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
     text(left.winOrLose, 50, height/2.5f - textWidth(left.winOrLose)/2.5f);
     text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5f - textWidth(right.winOrLose)/2.5f);
-    noFill();
-    rect(width/2 - 100, height/2, 200, 40);
-    fill(255);
-    textSize(32);
-    text("Play Again", width/2 - 60, height/2);
-  }
-}
-
-
-public void keyTyped() { // for testing between modes
-  if (key == ' ') {
-    r.gameState++;
-  }
-  if (key == 'h') {
-    r.gameState--;
+    textSize(20);
+    text("Press SPACE to Play Again", width/2 - textWidth("Press SPACE to Play Again")/2, 225);
+    text("Press ENTER to Return to Main Menu", width/2 - textWidth("Press ENTER to Return to Main Menu")/2, 300);
   }
 }
 class Bullet {
@@ -239,6 +239,8 @@ class Cowboy {
   private int up;
   private int down;
   public int maxScore = 10;
+  private int startingX;
+  private int startingY;
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
   int barrelY;
   int yOnFire; // will store the y coordinate of the barrel when the fire button was pressed so the bullet does not move upwards or downwards with the cowboy
@@ -255,6 +257,8 @@ class Cowboy {
   public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
     this.x = startX; // set starting coordinates of the cowboy unique to any particular instance of the class using this
     this.y = startY;
+    this.startingX = startX;
+    this.startingY = startY;
     this.downButton = d; // map up and down buttons to specified characters in the constructor
     this.upButton = u;
     this.fireButton = f;
@@ -326,6 +330,13 @@ class Cowboy {
     if (this.y + 30 <= 25) {
       this.speed = this.down;
     }
+  }
+
+
+  public void cleanUp() {
+    this.x = this.startingX;
+    this.y = this.startingY;
+    this.bulletFired = false;
   }
 }
 class Hitbox {
