@@ -70,6 +70,7 @@ public void keyTyped() { // for testing between modes
       r.gameState = 1;
     }
     if (key == ENTER) {
+      gameOver.pause();
       r.gameState = 0;
     }
   }
@@ -157,6 +158,9 @@ public void drawGame(int g) { // will take gamestate as param and run the corres
   if (g == -1) { // pause menu
   }
   if (g == 0) { // will draw start screen
+    textFont(r.title);
+    textSize(64);
+    text("Cowboy Duels", width/2 - textWidth("Cowboy Duels")/2, 75);
   }
   if (g == 1) { // will draw game
     left.move();
@@ -181,7 +185,7 @@ public void drawGame(int g) { // will take gamestate as param and run the corres
     text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
     text(left.winOrLose, 50, height/2.5f - textWidth(left.winOrLose)/2.5f);
-    text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5f - textWidth(right.winOrLose)/2.5f);
+    text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5f - textWidth(right.winOrLose)/2.2f);
     textSize(20);
     text("Press SPACE to Play Again", width/2 - textWidth("Press SPACE to Play Again")/2, 225);
     text("Press ENTER to Return to Main Menu", width/2 - textWidth("Press ENTER to Return to Main Menu")/2, 300);
@@ -379,6 +383,7 @@ class Resource {
   public int leftScore = 0; // score variables for left and right players
   public int rightScore = 0;
   public int maxScore = 2;
+  public boolean titleIn; // true if game title is finished animating in start menu
 
 
   public void load() { // loads assets for the game called once in setup

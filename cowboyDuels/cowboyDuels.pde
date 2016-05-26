@@ -49,9 +49,15 @@ void keyTyped() { // for testing between modes
   if (r.gameState == 2) { // if the game is over
     if (key == ' ') {
       restartGame();
+      if (gameOver.isPlaying()) { // pause gameOver sound if someone passes game over screen before it finishes
+        gameOver.pause();
+      }
       r.gameState = 1;
     }
     if (key == ENTER) {
+      if (gameOver.isPlaying()) {
+        gameOver.pause();
+      }
       r.gameState = 0;
     }
   }
@@ -139,6 +145,9 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
   if (g == -1) { // pause menu
   }
   if (g == 0) { // will draw start screen
+    textFont(r.title);
+    textSize(64);
+    text("Cowboy Duels", width/2 - textWidth("Cowboy Duels")/2, 75);
   }
   if (g == 1) { // will draw game
     left.move();
@@ -163,7 +172,7 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
     text(left.winOrLose, 50, height/2.5 - textWidth(left.winOrLose)/2.5);
-    text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5 - textWidth(right.winOrLose)/2.5);
+    text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5 - textWidth(right.winOrLose)/2.2);
     textSize(20);
     text("Press SPACE to Play Again", width/2 - textWidth("Press SPACE to Play Again")/2, 225);
     text("Press ENTER to Return to Main Menu", width/2 - textWidth("Press ENTER to Return to Main Menu")/2, 300);

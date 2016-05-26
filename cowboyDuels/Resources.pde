@@ -9,6 +9,7 @@ class Resource {
   public int leftScore = 0; // score variables for left and right players
   public int rightScore = 0;
   public int maxScore = 2;
+  public boolean titleIn; // true if game title is finished animating in start menu
 
 
   public void load() { // loads assets for the game called once in setup
