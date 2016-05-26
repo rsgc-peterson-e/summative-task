@@ -53,6 +53,7 @@ public void setup() {
   background = minim.loadSnippet("assets/audio/background.mp3");
   hit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
+  shot = minim.loadSnippet("assets/audio/gunShot.mp3");
 }
 
 
@@ -67,10 +68,15 @@ public void keyTyped() { // for testing between modes
   if (r.gameState == 2) { // if the game is over
     if (key == ' ') {
       restartGame();
+      if (gameOver.isPlaying()) { // pause gameOver sound if someone passes game over screen before it finishes
+        gameOver.pause();
+      }
       r.gameState = 1;
     }
     if (key == ENTER) {
-      gameOver.pause();
+      if (gameOver.isPlaying()) {
+        gameOver.pause();
+      }
       r.gameState = 0;
     }
   }
@@ -147,9 +153,14 @@ public void audio() { // plays audio for the game and updates audio snippets by 
     if (!hit.isPlaying()) { // rewind the file when it is not playing so when a cowboy gets hit by a bullet the sound plays from the beginning
       hit.rewind();
     }
-    if (r.gameState != 2) {
-      gameOver.rewind();
+    if (left.bulletFired || right.bulletFired) {
+      shot.play();
+    } else if (!left.bulletFired && !right.bulletFired) {
+      shot.rewind();
     }
+  }
+  if (r.gameState != 2) {
+    gameOver.rewind();
   }
 }
 

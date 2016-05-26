@@ -35,6 +35,7 @@ void setup() {
   background = minim.loadSnippet("assets/audio/background.mp3");
   hit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
+  shot = minim.loadSnippet("assets/audio/gunShot.mp3");
 }
 
 
@@ -134,9 +135,14 @@ void audio() { // plays audio for the game and updates audio snippets by rewindi
     if (!hit.isPlaying()) { // rewind the file when it is not playing so when a cowboy gets hit by a bullet the sound plays from the beginning
       hit.rewind();
     }
-    if (r.gameState != 2) {
-      gameOver.rewind();
+    if (left.bulletFired || right.bulletFired) {
+      shot.play();
+    } else if (!left.bulletFired && !right.bulletFired) {
+      shot.rewind();
     }
+  }
+  if (r.gameState != 2) {
+    gameOver.rewind();
   }
 }
 
