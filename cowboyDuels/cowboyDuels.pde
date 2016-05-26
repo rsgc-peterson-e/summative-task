@@ -21,6 +21,7 @@ Minim minim = new Minim(this);
 AudioSnippet background; // background western 8 bit music
 AudioSnippet hit; // wounded sound
 AudioSnippet shot; // gun fire sound
+AudioSnippet gameOver; // sound that plays at the game over screen
 
 
 void setup() {
@@ -33,6 +34,7 @@ void setup() {
   r.bg.resize(800, 600);
   background = minim.loadSnippet("assets/audio/background.mp3");
   hit = minim.loadSnippet("assets/audio/hit.mp3");
+  gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
 }
 
 
@@ -60,6 +62,7 @@ void restartGame() { // cleans up objects and gets them ready for a new game aft
   right.cleanUp();
   r.leftScore = 0;
   r.rightScore = 0;
+  gameOver.rewind();
 }
 
 void hud() { // will draw important info onscreen like score
@@ -125,6 +128,9 @@ void audio() { // plays audio for the game and updates audio snippets by rewindi
     if (!hit.isPlaying()) { // rewind the file when it is not playing so when a cowboy gets hit by a bullet the sound plays from the beginning
       hit.rewind();
     }
+    if (r.gameState != 2) {
+      gameOver.rewind();
+    }
   }
 }
 
@@ -146,6 +152,8 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     hud();
   }
   if (g == 2) { // game over screen
+    background.pause();
+    gameOver.play();
     textFont(r.title);
     fill(255);
     textSize(64);
