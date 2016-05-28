@@ -16,11 +16,12 @@ Cowboy right;
 Bullet rightBullet;
 Bullet leftBullet;
 Minim minim = new Minim(this);
-AudioSnippet background; // background western 8 bit music
+//AudioSnippet background; // background western 8 bit music
 // define audio snippets for both sides so I have file to play for each cowboy if they are shooting at the same time
 AudioSnippet leftHit; // wounded sound
 AudioSnippet rightHit;
 AudioSnippet gameOver; // sound that plays at the game over screen
+AudioPlayer background;
 
 
 void setup() {
@@ -31,14 +32,15 @@ void setup() {
   size(800, 600);
   r.load();
   r.bg.resize(800, 600);
-  background = minim.loadSnippet("assets/audio/background.mp3");
+  background = minim.loadFile("assets/audio/background.mp3");
   leftHit = minim.loadSnippet("assets/audio/hit.mp3");
   rightHit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
+  background.loop();
 }
 
 
-void draw() {
+void draw() { // calls all the essential functions in my program in a loop
   image(r.bg, 0, 0);
   audio();
   resetMain();
@@ -49,7 +51,6 @@ void draw() {
 void keyTyped() { // for testing between modes
   if (r.gameState == -1 && key == ENTER) {
     r.gameState = 0;
-    restartGame();
   } else if (r.gameState == -1 && key == ' ') {
     key = 'g'; // set key to different char to prevent other conditionals with key == ' ' from running
     r.gameState = 1;
@@ -57,6 +58,7 @@ void keyTyped() { // for testing between modes
   if (r.gameState == 1) {
     if (key == ' ') {
       r.gameState = -1;
+      background.pause();
     }
   }
   if (r.gameState == 2) { // if the game is over
@@ -156,16 +158,13 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
 
 void audio() { // plays audio for the game and updates audio snippets by rewinding them after they have been played
   if (r.gameState == 1) { // play the audio below only if the game is being played
-    background.play(); // loops the background audio
-    if (!background.isPlaying()) {
-      background.rewind();
-    }
     if (!leftHit.isPlaying()) {
       leftHit.rewind();
     }
     if (!rightHit.isPlaying()) {
       rightHit.rewind();
     }
+    background.play();
   }
   if (r.gameState != 2) {
     gameOver.rewind();
@@ -235,6 +234,8 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     image(r.rightCowBoy, 550, height/2 - r.rightCowBoy.height/2);
     text(r.leftScore, (width/2 - textWidth(Integer.toString(r.leftScore))/2) - 50, 585); // draw scores for both left and right cowboys
     text(r.rightScore, (width/2 - textWidth(Integer.toString(r.rightScore))/2) + 50, 585);
+    println(r.leftScore);
+    println(r.rightScore);
     text(left.winOrLose, 50, height/2.5 - textWidth(left.winOrLose)/2.5);
     text(right.winOrLose, 775 - textWidth(right.winOrLose), height/2.5 - textWidth(right.winOrLose)/2.2);
     textSize(20);
