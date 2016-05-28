@@ -5,7 +5,7 @@ Cowboy Duels
  Description: The Cowboy Duels game is a 2 player game where cowboy characters scroll up and down the left and right
  sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
  The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
- your fired bullet leaves the screen or hits you enemy. The game also has difficulty settings which will determine the speed of the bullet making  aiming easier or harder.
+ your fired bullet leaves the screen or hits you enemy.
  */
 
 import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
@@ -21,7 +21,6 @@ AudioSnippet background; // background western 8 bit music
 AudioSnippet leftHit; // wounded sound
 AudioSnippet rightHit;
 AudioSnippet gameOver; // sound that plays at the game over screen
-
 
 void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT", this); // pass this keyword when specifying PApplet for cowboy class
@@ -64,6 +63,7 @@ void keyTyped() { // for testing between modes
   if (r.gameState == 0) {
     if (key == ' ') {
       r.gameState = 1;
+      
     }
   }
 }
@@ -168,7 +168,7 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     image(r.rightCowBoy, 550, height/2 - r.rightCowBoy.height/2);
     textSize(32);
     if (r.opacity < 255) { // have text telling user to play by pressing space fade in
-      r.opacity++;
+      r.opacity += 2;
     }
     fill(255, r.opacity);
     text("Press SPACE to Play", width/2 - textWidth("Press SPACE to Play")/2 + 5, 250);
