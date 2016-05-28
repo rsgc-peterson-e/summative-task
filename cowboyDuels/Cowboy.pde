@@ -1,4 +1,6 @@
 class Cowboy {
+  private Minim minim;
+  private AudioPlayer shot; // gun fire sound
   private int x;
   private int y;
   private int speed = 1;
@@ -20,7 +22,8 @@ class Cowboy {
   PImage cowboy;
 
 
-  public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
+  public Cowboy(int startX, int startY, int scrollSpeed, char u, char d, char f, String side, PApplet p) { // take chars for up and down cowboy motion and fire button and speed and start coordinates take string to see what side the cowboy is on
+    // add PApplet parameter to pass as context to the Minim constructor so it can play the audio properly because simply specifying this to the minim constructor within a class just refers to the cowboy class causing a nullPointerException
     this.x = startX; // set starting coordinates of the cowboy unique to any particular instance of the class using this
     this.y = startY;
     this.startingX = startX;
@@ -28,6 +31,7 @@ class Cowboy {
     this.downButton = d; // map up and down buttons to specified characters in the constructor
     this.upButton = u;
     this.fireButton = f;
+    this.minim = new Minim(p);
     if (side.equals("LEFT")) {
       cowboy = loadImage("assets/img/leftCowboy.png");
     }
@@ -40,6 +44,7 @@ class Cowboy {
     for (int i = 0; i < hitbox.length; i++) { // for loop to construct array of Hitbox objects
       this.hitbox[i] = new Hitbox();
     }
+    shot = minim.loadFile("assets/audio/gunShot.mp3");
   }
 
 
@@ -70,6 +75,9 @@ class Cowboy {
       this.hitbox[3].update(this.x + 40, this.y + 130, 27, cowboy.height - 140);
       this.hitbox[4].update(this.x + 69, this.y + 130, 27, cowboy.height - 140);
     }
+    if (!this.bulletFired) {
+      this.shot.rewind();
+    }
     changeDir();
   }
 
@@ -81,9 +89,10 @@ class Cowboy {
       if (key == this.downButton && !(this.y + 157 >= 550)) {
         this.speed = this.down;
       }
-      if (key == this.fireButton && !bulletFired) {
+      if (key == this.fireButton && !this.bulletFired) {
         this.bulletFired = true;
         this.yOnFire = this.barrelY;
+        this.shot.play();
       }
     }
   }

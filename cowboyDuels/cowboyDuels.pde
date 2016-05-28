@@ -22,14 +22,12 @@ AudioSnippet background; // background western 8 bit music
 // define audio snippets for both sides so I have file to play for each cowboy if they are shooting at the same time
 AudioSnippet leftHit; // wounded sound
 AudioSnippet rightHit;
-AudioSnippet leftShot; // gun fire sound
-AudioSnippet rightShot;
 AudioSnippet gameOver; // sound that plays at the game over screen
 
 
 void setup() {
-  left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT");
-  right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT");
+  left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT", this); // pass this keyword when specifying PApplet for cowboy class
+  right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT", this);
   leftBullet = new Bullet(left, 5);
   rightBullet = new Bullet(right, 5);
   size(800, 600);
@@ -39,8 +37,6 @@ void setup() {
   leftHit = minim.loadSnippet("assets/audio/hit.mp3");
   rightHit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
-  leftShot = minim.loadSnippet("assets/audio/gunShot.mp3");
-  rightShot = minim.loadSnippet("assets/audio/gunShot.mp3");
 }
 
 
@@ -142,16 +138,6 @@ void audio() { // plays audio for the game and updates audio snippets by rewindi
     }
     if (!rightHit.isPlaying()) {
       rightHit.rewind();
-    }
-    if (!left.bulletFired) {
-      leftShot.rewind();
-    } else {
-      leftShot.play();
-    }
-    if (!right.bulletFired) {
-      rightShot.rewind();
-    } else {
-      rightShot.play();
     }
   }
   if (r.gameState != 2) {
