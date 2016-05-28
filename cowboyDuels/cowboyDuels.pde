@@ -47,6 +47,13 @@ void draw() {
 
 
 void keyTyped() { // for testing between modes
+  if (r.gameState == -1 && key == ENTER) {
+    r.gameState = 0;
+    restartGame();
+  } else if (r.gameState == -1 && key == ' ') {
+    key = 'g'; // set key to different char to prevent other conditionals with key == ' ' from running
+    r.gameState = 1;
+  }
   if (r.gameState == 1) {
     if (key == ' ') {
       r.gameState = -1;
@@ -178,7 +185,9 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
       image(rightBullet.bullet, rightBullet.x, rightBullet.y);
     }
     fill(208, 100);
+    noStroke();
     rect(0, 0, width, height);
+    stroke(5);
     fill(255);
     textFont(r.title);
     textSize(64);
