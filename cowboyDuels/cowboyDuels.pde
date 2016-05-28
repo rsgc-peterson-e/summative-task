@@ -150,7 +150,14 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
   if (g == 0) { // will draw start screen
     textFont(r.title);
     textSize(64);
+    if (r.titleY < 75) {
+      r.titleY++;
+    }
     text("Cowboy Duels", width/2 - textWidth("Cowboy Duels")/2, r.titleY);
+    image(r.leftCowBoy, 0, height/2 - r.leftCowBoy.height/2);
+    image(r.rightCowBoy, 550, height/2 - r.rightCowBoy.height/2);
+    textSize(32);
+    text("Press SPACE to Play", width/2 - textWidth("Press SPACE to Play")/2 + 5, 250);
   }
   if (g == 1) { // will draw game
     left.move();
