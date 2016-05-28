@@ -1,7 +1,7 @@
 /*
 Cowboy Duels
  Author: Ethan Peterson
- Revision Date: May 25, 2016
+ Revision Date: May 27, 2016
  Description: The Cowboy Duels game is a 2 player game where cowboy characters scroll up and down the left and right
  sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
  The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
@@ -15,8 +15,6 @@ Cowboy left;
 Cowboy right;
 Bullet rightBullet;
 Bullet leftBullet;
-int leftBulletX;
-int leftBulletY;
 Minim minim = new Minim(this);
 AudioSnippet background; // background western 8 bit music
 // define audio snippets for both sides so I have file to play for each cowboy if they are shooting at the same time
@@ -152,7 +150,7 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
   if (g == 0) { // will draw start screen
     textFont(r.title);
     textSize(64);
-    text("Cowboy Duels", width/2 - textWidth("Cowboy Duels")/2, 75);
+    text("Cowboy Duels", width/2 - textWidth("Cowboy Duels")/2, r.titleY);
   }
   if (g == 1) { // will draw game
     left.move();

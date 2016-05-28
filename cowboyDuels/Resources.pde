@@ -9,6 +9,8 @@ class Resource {
   public int leftScore = 0; // score variables for left and right players
   public int rightScore = 0;
   public int maxScore = 10;
+  public int titleX;
+  public int titleY = -30;
 
 
   public void load() { // loads assets for the game called once in setup
