@@ -13,7 +13,7 @@ class Cowboy {
   public Hitbox[] hitbox = new Hitbox[5];
   private char downButton;
   private char upButton;
-  private char fireButton;
+  char fireButton;
   String whatSide; // stores what side the cowboy is on for the class
   boolean bulletFired; // true if the fire button specified in constructor has been pressed
   String winOrLose = "Loser"; // will have whether the cowboy has won or lost at the end of the game stays at loser originally and is change iif the particular cowboy is the winner

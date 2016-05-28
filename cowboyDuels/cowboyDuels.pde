@@ -19,8 +19,11 @@ int leftBulletX;
 int leftBulletY;
 Minim minim = new Minim(this);
 AudioSnippet background; // background western 8 bit music
-AudioSnippet hit; // wounded sound
-AudioSnippet shot; // gun fire sound
+// define audio snippets for both sides so I have file to play for each cowboy if they are shooting at the same time
+AudioSnippet leftHit; // wounded sound
+AudioSnippet rightHit;
+AudioSnippet leftShot; // gun fire sound
+AudioSnippet rightShot;
 AudioSnippet gameOver; // sound that plays at the game over screen
 
 
@@ -33,9 +36,11 @@ void setup() {
   r.load();
   r.bg.resize(800, 600);
   background = minim.loadSnippet("assets/audio/background.mp3");
-  hit = minim.loadSnippet("assets/audio/hit.mp3");
+  leftHit = minim.loadSnippet("assets/audio/hit.mp3");
+  rightHit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
-  shot = minim.loadSnippet("assets/audio/gunShot.mp3");
+  leftShot = minim.loadSnippet("assets/audio/gunShot.mp3");
+  rightShot = minim.loadSnippet("assets/audio/gunShot.mp3");
 }
 
 
@@ -103,7 +108,7 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
           r.leftScore++; // increase the players score by 1 if they hit the other
           b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
           println("LEFT SCORE: " + r.leftScore);
-          hit.play(); // play a sound when a player is hit
+          rightHit.play(); // play a sound when a player is hit
           if (r.leftScore == r.maxScore) {
             b.cowboy.winOrLose = "Winner";
             r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
@@ -113,7 +118,7 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
           r.rightScore++;
           b.cowboy.bulletFired = false;
           println("RIGHT SCORE: " + r.rightScore);
-          hit.play();
+          leftHit.play();
           if (r.leftScore == r.maxScore) {
             b.cowboy.winOrLose = "Winner";
             r.gameState = 2;
@@ -132,13 +137,21 @@ void audio() { // plays audio for the game and updates audio snippets by rewindi
     if (!background.isPlaying()) {
       background.rewind();
     }
-    if (!hit.isPlaying()) { // rewind the file when it is not playing so when a cowboy gets hit by a bullet the sound plays from the beginning
-      hit.rewind();
+    if (!leftHit.isPlaying()) {
+      leftHit.rewind();
     }
-    if (left.bulletFired || right.bulletFired) {
-      shot.play();
-    } else if (!left.bulletFired && !right.bulletFired) {
-      shot.rewind();
+    if (!rightHit.isPlaying()) {
+      rightHit.rewind();
+    }
+    if (!left.bulletFired) {
+      leftShot.rewind();
+    } else {
+      leftShot.play();
+    }
+    if (!right.bulletFired) {
+      rightShot.rewind();
+    } else {
+      rightShot.play();
     }
   }
   if (r.gameState != 2) {
