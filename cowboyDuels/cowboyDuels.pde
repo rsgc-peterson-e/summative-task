@@ -40,6 +40,7 @@ void setup() {
 void draw() {
   image(r.bg, 0, 0);
   audio();
+  resetMain();
   drawGame(r.gameState);
 }
 
@@ -59,11 +60,11 @@ void keyTyped() { // for testing between modes
       }
       r.gameState = 0;
     }
+    restartGame();
   }
   if (r.gameState == 0) {
     if (key == ' ') {
       r.gameState = 1;
-      
     }
   }
 }
@@ -77,7 +78,10 @@ void restartGame() { // cleans up objects and gets them ready for a new game aft
 }
 
 void resetMain() { // will reset variables for main menu animation
-  
+  if (r.gameState != 0) {
+    r.titleY = -30; // reset animation variables so the main menu animateion will play everytime the main menu is accessed
+    r.opacity = 0; 
+  }
 }
 
 void hud() { // will draw important info onscreen like score
@@ -159,7 +163,7 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
   if (g == 0) { // will draw start screen
     textFont(r.title);
     textSize(64);
-    if (r.titleY < 75) { // steadily increase titles y coordinate until its in the right pos
+    if (r.titleY < 125) { // steadily increase titles y coordinate until its in the right pos
       r.titleY++;
     }
     fill(255);
