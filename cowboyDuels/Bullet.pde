@@ -2,7 +2,7 @@ class Bullet {
   int x;
   int y;
   private int speed;
-  private PImage bullet;
+  PImage bullet;
   Cowboy cowboy;
   public Hitbox[] points = new Hitbox[3];
 

@@ -22,6 +22,7 @@ AudioSnippet leftHit; // wounded sound
 AudioSnippet rightHit;
 AudioSnippet gameOver; // sound that plays at the game over screen
 
+
 void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT", this); // pass this keyword when specifying PApplet for cowboy class
   right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT", this);
@@ -46,6 +47,11 @@ void draw() {
 
 
 void keyTyped() { // for testing between modes
+  if (r.gameState == 1) {
+    if (key == ' ') {
+      r.gameState = -1;
+    }
+  }
   if (r.gameState == 2) { // if the game is over
     if (key == ' ') {
       restartGame();
@@ -69,6 +75,7 @@ void keyTyped() { // for testing between modes
   }
 }
 
+
 void restartGame() { // cleans up objects and gets them ready for a new game after the user decides to play another game
   left.cleanUp();
   right.cleanUp();
@@ -77,12 +84,14 @@ void restartGame() { // cleans up objects and gets them ready for a new game aft
   gameOver.rewind();
 }
 
+
 void resetMain() { // will reset variables for main menu animation
   if (r.gameState != 0) {
     r.titleY = -30; // reset animation variables so the main menu animateion will play everytime the main menu is accessed
-    r.opacity = 0; 
+    r.opacity = 0;
   }
 }
+
 
 void hud() { // will draw important info onscreen like score
   textFont(r.score);
@@ -159,6 +168,24 @@ void audio() { // plays audio for the game and updates audio snippets by rewindi
 
 void drawGame(int g) { // will take gamestate as param and run the corresponding the code
   if (g == -1) { // pause menu
+    hud();
+    image(left.cowboy, left.x, left.y);
+    image(right.cowboy, right.x, right.y);
+    if (left.bulletFired) { // draw bullet where it was onscreen when the game was paused as long it has been fired
+      image(leftBullet.bullet, leftBullet.x, leftBullet.y);
+    }
+    if (right.bulletFired) {
+      image(rightBullet.bullet, rightBullet.x, rightBullet.y);
+    }
+    fill(208, 100);
+    rect(0, 0, width, height);
+    fill(255);
+    textFont(r.title);
+    textSize(64);
+    text("Paused", width/2 - textWidth("Paused")/2, 125);
+    textSize(32);
+    text("Press SPACE to Continue", width/2 - textWidth("Press SPACE to Continue")/2, 200);
+    text("Press ENTER to Exit to Main Menu", width/2 - textWidth("Press ENTER to Exit to Main Menu")/2, 250);
   }
   if (g == 0) { // will draw start screen
     textFont(r.title);
