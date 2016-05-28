@@ -61,6 +61,11 @@ void keyTyped() { // for testing between modes
       r.gameState = 0;
     }
   }
+  if (r.gameState == 0) {
+    if (key == ' ') {
+      r.gameState = 1;
+    }
+  }
 }
 
 void restartGame() { // cleans up objects and gets them ready for a new game after the user decides to play another game
@@ -69,6 +74,10 @@ void restartGame() { // cleans up objects and gets them ready for a new game aft
   r.leftScore = 0;
   r.rightScore = 0;
   gameOver.rewind();
+}
+
+void resetMain() { // will reset variables for main menu animation
+  
 }
 
 void hud() { // will draw important info onscreen like score
@@ -150,13 +159,18 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
   if (g == 0) { // will draw start screen
     textFont(r.title);
     textSize(64);
-    if (r.titleY < 75) {
+    if (r.titleY < 75) { // steadily increase titles y coordinate until its in the right pos
       r.titleY++;
     }
+    fill(255);
     text("Cowboy Duels", width/2 - textWidth("Cowboy Duels")/2, r.titleY);
     image(r.leftCowBoy, 0, height/2 - r.leftCowBoy.height/2);
     image(r.rightCowBoy, 550, height/2 - r.rightCowBoy.height/2);
     textSize(32);
+    if (r.opacity < 255) { // have text telling user to play by pressing space fade in
+      r.opacity++;
+    }
+    fill(255, r.opacity);
     text("Press SPACE to Play", width/2 - textWidth("Press SPACE to Play")/2 + 5, 250);
   }
   if (g == 1) { // will draw game
