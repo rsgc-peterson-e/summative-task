@@ -23,7 +23,7 @@ AudioSnippet rightHit;
 AudioSnippet gameOver; // sound that plays at the game over screen
 AudioSnippet bulletCollision; // plays an explosion sound when the bullets collide
 AudioPlayer background;
-
+int maxScore = 10;
 
 void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT", this); // pass this keyword when specifying PApplet for cowboy class
@@ -48,7 +48,6 @@ void draw() { // calls all the essential functions in my program in a loop
   drawGame(r.gameState);
   left.update(r); // feed instance of resource class with correct variables vals to cowboy class
   right.update(r);
-  saveFrame("frames/#####.png");
 }
 
 
@@ -143,24 +142,24 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
           b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
           println("LEFT SCORE: " + r.leftScore);
           rightHit.play(); // play a sound when a player is hit
-          if (r.leftScore == r.maxScore) {
-            b.cowboy.winOrLose = "Winner";
-            r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
-            println("LEFT: " + b.cowboy.winOrLose);
-          }
         } else if (b.cowboy.whatSide.equals("RIGHT") && b.cowboy.bulletFired) {
           r.rightScore++;
           b.cowboy.bulletFired = false;
           println("RIGHT SCORE: " + r.rightScore);
           leftHit.play();
-          if (r.leftScore == r.maxScore) {
-            b.cowboy.winOrLose = "Winner";
-            r.gameState = 2;
-            println("RIGHT: " + b.cowboy.winOrLose);
-          }
         }
       }
     }
+  }
+  if (r.leftScore >= maxScore) {
+    leftBullet.cowboy.winOrLose = "Winner";
+    r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
+    println("LEFT: " + leftBullet.cowboy.winOrLose);
+  }
+  if (r.rightScore >= maxScore) {
+    rightBullet.cowboy.winOrLose = "Winner";
+    r.gameState = 2;
+    println("RIGHT: " + rightBullet.cowboy.winOrLose);
   }
 }
 
