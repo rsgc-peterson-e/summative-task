@@ -59,6 +59,8 @@ void keyTyped() { // for testing between modes
   if (r.gameState == 1) {
     if (key == ' ') {
       r.gameState = -1;
+      left.audioCleanUp();
+      right.audioCleanUp();
       background.pause();
     }
   }
