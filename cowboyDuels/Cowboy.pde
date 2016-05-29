@@ -1,7 +1,7 @@
 class Cowboy {
   private Minim minim;
-  private Resource r = new Resource();
   private AudioPlayer shot; // gun fire sound
+  private Resource r;
   private int x;
   private int y;
   private int speed = 1;
@@ -93,11 +93,7 @@ class Cowboy {
       if (key == this.fireButton && !this.bulletFired) {
         this.bulletFired = true;
         this.yOnFire = this.barrelY;
-        if (r.gameState == -1) { // prevents bullet sound from continuing to play while game is paused
-          this.shot.pause();
-        } else {
-          this.shot.play();
-        }
+        this.shot.play();
       }
     }
   }
@@ -117,5 +113,13 @@ class Cowboy {
     this.x = this.startingX;
     this.y = this.startingY;
     this.bulletFired = false;
+  }
+
+  public void update(Resource r) { // update a instance of resource for this class
+    this.r = r;
+  }
+  
+  public void audioCleanUp() {
+    
   }
 }

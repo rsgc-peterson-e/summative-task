@@ -26,7 +26,7 @@ AudioPlayer background;
 
 void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT", this); // pass this keyword when specifying PApplet for cowboy class
-  right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT", this);
+  right = new Cowboy(665, 300, 1, 'i', 'j', 'o', "RIGHT", this); 
   leftBullet = new Bullet(left, 5);
   rightBullet = new Bullet(right, 5);
   size(800, 600);
@@ -36,7 +36,6 @@ void setup() {
   leftHit = minim.loadSnippet("assets/audio/hit.mp3");
   rightHit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
-  background.loop();
 }
 
 
@@ -45,6 +44,8 @@ void draw() { // calls all the essential functions in my program in a loop
   audio();
   resetMain();
   drawGame(r.gameState);
+  left.update(r); // feed instance of resource class with correct variables vals to cowboy class
+  right.update(r);   
 }
 
 
@@ -81,6 +82,9 @@ void keyTyped() { // for testing between modes
     if (key == ' ') {
       r.gameState = 1;
     }
+  }
+  if (r.gameState == 0 && key == ' ') {
+    background.loop();
   }
 }
 
