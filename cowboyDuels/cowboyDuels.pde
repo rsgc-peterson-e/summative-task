@@ -162,6 +162,24 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
 }
 
 
+void bulletCollision(Bullet a, Bullet b) { // take two bullets as parameters and test if they touch one another while fired
+  if (a.cowboy.bulletFired && b.cowboy.bulletFired) {
+    // check for collisions with each bullet
+    for (int i = 0; i < a.points.length; i++) {
+      if (bulletInCowboy(a.points[i].x, a.points[i].y, b.hitbox.x, b.hitbox.y, b.hitbox.w, b.hitbox.h)) { // checks if any of bullet a's collision points went inside the hitbox rectangle of bullet b
+        // put bullets back to their non fired state as they intersected
+        a.cowboy.bulletFired = false;
+        b.cowboy.bulletFired = false;
+      }
+      if (bulletInCowboy(b.points[i].x, b.points[i].y, a.hitbox.x, a.hitbox.y, a.hitbox.w, a.hitbox.h)) {
+        a.cowboy.bulletFired = false;
+        b.cowboy.bulletFired = false;
+      }
+    }
+  }
+}
+
+
 void audio() { // plays audio for the game and updates audio snippets by rewinding them after they have been played
   if (r.gameState == 1) { // play the audio below only if the game is being played
     if (!leftHit.isPlaying()) {
@@ -227,6 +245,7 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     rightBullet.fire();
     collision(right.hitbox, leftBullet);
     collision(left.hitbox, rightBullet);
+    bulletCollision(leftBullet, rightBullet);
     hud();
   }
   if (g == 2) { // game over screen
