@@ -119,7 +119,7 @@ class Cowboy {
     this.r = r;
   }
   
-  public void audioCleanUp() {
-    
+  public void audioCleanUp() { // stops audio so it does not play when pause menu is activated
+    this.shot.pause();
   }
 }
