@@ -47,7 +47,8 @@ void draw() { // calls all the essential functions in my program in a loop
   resetMain();
   drawGame(r.gameState);
   left.update(r); // feed instance of resource class with correct variables vals to cowboy class
-  right.update(r);   
+  right.update(r);
+  saveFrame("frames/#####.png");
 }
 
 
