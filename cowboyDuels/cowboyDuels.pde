@@ -21,6 +21,7 @@ Minim minim = new Minim(this);
 AudioSnippet leftHit; // wounded sound
 AudioSnippet rightHit;
 AudioSnippet gameOver; // sound that plays at the game over screen
+AudioSnippet bulletCollision; // plays an explosion sound when the bullets collide
 AudioPlayer background;
 
 
@@ -36,6 +37,7 @@ void setup() {
   leftHit = minim.loadSnippet("assets/audio/hit.mp3");
   rightHit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
+  bulletCollision = minim.loadSnippet("assets/audio/boom.mp3");
 }
 
 
@@ -166,14 +168,13 @@ void bulletCollision(Bullet a, Bullet b) { // take two bullets as parameters and
   if (a.cowboy.bulletFired && b.cowboy.bulletFired) {
     // check for collisions with each bullet
     for (int i = 0; i < a.points.length; i++) {
-      if (bulletInCowboy(a.points[i].x, a.points[i].y, b.hitbox.x, b.hitbox.y, b.hitbox.w, b.hitbox.h)) { // checks if any of bullet a's collision points went inside the hitbox rectangle of bullet b
+      if (bulletInCowboy(a.points[i].x, a.points[i].y, b.hitbox.x, b.hitbox.y, b.hitbox.w, b.hitbox.h) || bulletInCowboy(b.points[i].x, b.points[i].y, a.hitbox.x, a.hitbox.y, a.hitbox.w, a.hitbox.h)) { // checks if any of bullet a's collision points went inside the hitbox rectangle of bullet b
         // put bullets back to their non fired state as they intersected
         a.cowboy.bulletFired = false;
         b.cowboy.bulletFired = false;
-      }
-      if (bulletInCowboy(b.points[i].x, b.points[i].y, a.hitbox.x, a.hitbox.y, a.hitbox.w, a.hitbox.h)) {
-        a.cowboy.bulletFired = false;
-        b.cowboy.bulletFired = false;
+        bulletCollision.play();
+      } else {
+        bulletCollision.rewind();
       }
     }
   }
