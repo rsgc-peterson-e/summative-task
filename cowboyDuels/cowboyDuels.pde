@@ -3,9 +3,9 @@ Cowboy Duels
  Author: Ethan Peterson
  Revision Date: May 27, 2016
  Description: The Cowboy Duels game is a 2 player game where cowboy characters scroll up and down the left and right
- sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
- The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
- your fired bullet leaves the screen or hits you enemy.
+ sides of the screen automatically, the player can change the direction of their respective player and attempt to shoot the other cowboy.
+ The game's challenge comes from timing and firing your shot at the correct moment. Timing and aim is extremely important because the game allows you to shoot the other
+ players bullet out of mid air.
  
  Right Player Controls:
  press "i" to move up
