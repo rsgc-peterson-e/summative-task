@@ -95,8 +95,10 @@ void keyTyped() { // for testing between modes
       r.gameState = 1;
     }
   }
-  right.input();
-  left.input();
+  if (r.gameState == 1) {
+    right.input();
+    left.input();
+  }
   if (r.gameState == 1 && !background.isPlaying()) {
     background.rewind();
     background.play();
