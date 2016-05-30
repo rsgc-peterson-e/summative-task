@@ -83,7 +83,7 @@ class Cowboy {
   }
 
   public void input() { // function will be called in a loop taking of user input to the cowboy characters
-    if (keyPressed) {
+    //if (keyPressed) {
       if (key == this.upButton && !(this.y + 30 <= 25)) {
         this.speed = this.up;
       }
@@ -95,7 +95,7 @@ class Cowboy {
         this.yOnFire = this.barrelY;
         this.shot.play();
       }
-    }
+    //}
   }
 
 

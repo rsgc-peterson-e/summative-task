@@ -9,6 +9,8 @@ Cowboy Duels
  */
 
 import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
+import processing.sound.*; // for testing
+
 
 Resource r = new Resource();
 Cowboy left;
@@ -16,13 +18,13 @@ Cowboy right;
 Bullet rightBullet;
 Bullet leftBullet;
 Minim minim = new Minim(this);
-//AudioSnippet background; // background western 8 bit music
 // define audio snippets for both sides so I have file to play for each cowboy if they are shooting at the same time
 AudioSnippet leftHit; // wounded sound
 AudioSnippet rightHit;
 AudioSnippet gameOver; // sound that plays at the game over screen
 AudioSnippet bulletCollision; // plays an explosion sound when the bullets collide
-AudioPlayer background;
+AudioPlayer background; // western 8 bit music
+SoundFile test;
 int maxScore = 10;
 
 void setup() {
@@ -38,6 +40,7 @@ void setup() {
   rightHit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
   bulletCollision = minim.loadSnippet("assets/audio/boom.mp3");
+  background.loop();
 }
 
 
@@ -54,6 +57,7 @@ void draw() { // calls all the essential functions in my program in a loop
 void keyTyped() { // for testing between modes
   if (r.gameState == -1 && key == ENTER) {
     r.gameState = 0;
+    background.play();
   } else if (r.gameState == -1 && key == ' ') {
     key = 'g'; // set key to different char to prevent other conditionals with key == ' ' from running
     r.gameState = 1;
@@ -87,8 +91,10 @@ void keyTyped() { // for testing between modes
       r.gameState = 1;
     }
   }
-  if (r.gameState == 0 && key == ' ') {
-    background.loop();
+  right.input();
+  left.input();
+  if (!background.isPlaying() && background.position() >= background.length()) { // make sure background sound gets rewinded to the beginning when it finishes playing
+    background.rewind();
   }
 }
 
@@ -142,30 +148,30 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
           b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
           println("LEFT SCORE: " + r.leftScore);
           rightHit.play(); // play a sound when a player is hit
+          if (r.leftScore == maxScore) {
+            leftBullet.cowboy.winOrLose = "Winner";
+            r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
+            println("LEFT: " + leftBullet.cowboy.winOrLose);
+          }
         } else if (b.cowboy.whatSide.equals("RIGHT") && b.cowboy.bulletFired) {
           r.rightScore++;
           b.cowboy.bulletFired = false;
           println("RIGHT SCORE: " + r.rightScore);
           leftHit.play();
+          if (r.rightScore == maxScore) {
+            rightBullet.cowboy.winOrLose = "Winner";
+            r.gameState = 2;
+            println("RIGHT: " + rightBullet.cowboy.winOrLose);
+          }
         }
       }
     }
-  }
-  if (r.leftScore >= maxScore) {
-    leftBullet.cowboy.winOrLose = "Winner";
-    r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
-    println("LEFT: " + leftBullet.cowboy.winOrLose);
-  }
-  if (r.rightScore >= maxScore) {
-    rightBullet.cowboy.winOrLose = "Winner";
-    r.gameState = 2;
-    println("RIGHT: " + rightBullet.cowboy.winOrLose);
   }
 }
 
 
 void bulletCollision(Bullet a, Bullet b) { // take two bullets as parameters and test if they touch one another while fired
-  if (a.cowboy.bulletFired && b.cowboy.bulletFired) {
+  if (a.cowboy.bulletFired && b.cowboy.bulletFired) { // only run the function if two bullets have been fired to collide with one another in the first place
     // check for collisions with each bullet
     for (int i = 0; i < a.points.length; i++) {
       if (bulletInCowboy(a.points[i].x, a.points[i].y, b.hitbox.x, b.hitbox.y, b.hitbox.w, b.hitbox.h) || bulletInCowboy(b.points[i].x, b.points[i].y, a.hitbox.x, a.hitbox.y, a.hitbox.w, a.hitbox.h)) { // checks if any of bullet a's collision points went inside the hitbox rectangle of bullet b
@@ -239,9 +245,9 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
   }
   if (g == 1) { // will draw game
     left.move();
-    left.input();
+    //left.input();
     right.move();
-    right.input();
+    //right.input();
     leftBullet.fire();
     rightBullet.fire();
     collision(right.hitbox, leftBullet);
