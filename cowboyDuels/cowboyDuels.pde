@@ -112,6 +112,8 @@ void restartGame() { // cleans up objects and gets them ready for a new game aft
   r.leftScore = 0;
   r.rightScore = 0;
   gameOver.rewind();
+  left.winOrLose = "Loser";
+  right.winOrLose = "Loser";
 }
 
 
