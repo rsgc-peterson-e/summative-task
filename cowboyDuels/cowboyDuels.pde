@@ -6,11 +6,19 @@ Cowboy Duels
  sides of the screen automatically the player can change the direction of their respective player and attempt to shoot the other cowboy.
  The game's challenge comes from timing and firing your shot at the correct moment because if you have already shot will not gain another bullet until
  your fired bullet leaves the screen or hits you enemy.
+ 
+ Right Player Controls:
+ press "i" to move up
+ press "j" to move down
+ press "o" to shoot
+ 
+ Left Player Controls:
+ press "w" to move up
+ press "s" to move down
+ press "e" to shoot
  */
 
 import ddf.minim.*; // 3rd party audio library downloaded from processing via library wizard
-import processing.sound.*; // for testing
-
 
 Resource r = new Resource();
 Cowboy left;
@@ -24,8 +32,6 @@ AudioSnippet rightHit;
 AudioSnippet gameOver; // sound that plays at the game over screen
 AudioSnippet bulletCollision; // plays an explosion sound when the bullets collide
 AudioPlayer background; // western 8 bit music
-SoundFile test;
-int maxScore = 10;
 
 void setup() {
   left = new Cowboy(5, 300, 1, 'w', 's', 'e', "LEFT", this); // pass this keyword when specifying PApplet for cowboy class
@@ -40,7 +46,6 @@ void setup() {
   rightHit = minim.loadSnippet("assets/audio/hit.mp3");
   gameOver = minim.loadSnippet("assets/audio/gameOver.mp3");
   bulletCollision = minim.loadSnippet("assets/audio/boom.mp3");
-  background.loop();
 }
 
 
@@ -57,7 +62,7 @@ void draw() { // calls all the essential functions in my program in a loop
 void keyTyped() { // for testing between modes
   if (r.gameState == -1 && key == ENTER) {
     r.gameState = 0;
-    background.play();
+    background.pause();
   } else if (r.gameState == -1 && key == ' ') {
     key = 'g'; // set key to different char to prevent other conditionals with key == ' ' from running
     r.gameState = 1;
@@ -93,8 +98,9 @@ void keyTyped() { // for testing between modes
   }
   right.input();
   left.input();
-  if (!background.isPlaying() && background.position() >= background.length()) { // make sure background sound gets rewinded to the beginning when it finishes playing
+  if (r.gameState == 1 && !background.isPlaying()) {
     background.rewind();
+    background.play();
   }
 }
 
@@ -148,7 +154,7 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
           b.cowboy.bulletFired = false; // set bulletFired to false so the player can reload and shoot again
           println("LEFT SCORE: " + r.leftScore);
           rightHit.play(); // play a sound when a player is hit
-          if (r.leftScore == maxScore) {
+          if (r.leftScore == r.maxScore) {
             leftBullet.cowboy.winOrLose = "Winner";
             r.gameState = 2; // switch to game over screen once max score is reached by either left or right cowboy
             println("LEFT: " + leftBullet.cowboy.winOrLose);
@@ -158,7 +164,7 @@ void collision(Hitbox[] h, Bullet b) { // bullet collision with cowboy's will be
           b.cowboy.bulletFired = false;
           println("RIGHT SCORE: " + r.rightScore);
           leftHit.play();
-          if (r.rightScore == maxScore) {
+          if (r.rightScore == r.maxScore) {
             rightBullet.cowboy.winOrLose = "Winner";
             r.gameState = 2;
             println("RIGHT: " + rightBullet.cowboy.winOrLose);
@@ -254,6 +260,10 @@ void drawGame(int g) { // will take gamestate as param and run the corresponding
     collision(left.hitbox, rightBullet);
     bulletCollision(leftBullet, rightBullet);
     hud();
+    if (!background.isPlaying()) {
+      background.rewind();
+      background.play();
+    }
   }
   if (g == 2) { // game over screen
     background.pause();

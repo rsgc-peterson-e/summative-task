@@ -7,7 +7,7 @@ class Cowboy {
   private int speed = 1;
   private int up;
   private int down;
-  public int maxScore = 10;
+  public int maxScore = 5;
   private int startingX;
   private int startingY;
   int barrelX; // will be mapped to the barrel coordinates of the cowboy character's gun to ensure the bullet fires from the right place
@@ -83,19 +83,17 @@ class Cowboy {
   }
 
   public void input() { // function will be called in a loop taking of user input to the cowboy characters
-    //if (keyPressed) {
-      if (key == this.upButton && !(this.y + 30 <= 25)) {
-        this.speed = this.up;
-      }
-      if (key == this.downButton && !(this.y + 157 >= 550)) {
-        this.speed = this.down;
-      }
-      if (key == this.fireButton && !this.bulletFired) {
-        this.bulletFired = true;
-        this.yOnFire = this.barrelY;
-        this.shot.play();
-      }
-    //}
+    if (key == this.upButton && !(this.y + 30 <= 25)) {
+      this.speed = this.up;
+    }
+    if (key == this.downButton && !(this.y + 157 >= 550)) {
+      this.speed = this.down;
+    }
+    if (key == this.fireButton && !this.bulletFired) {
+      this.bulletFired = true;
+      this.yOnFire = this.barrelY;
+      this.shot.play();
+    }
   }
 
 
@@ -118,7 +116,7 @@ class Cowboy {
   public void update(Resource r) { // update a instance of resource for this class
     this.r = r;
   }
-  
+
   public void audioCleanUp() { // stops audio so it does not play when pause menu is activated
     this.shot.pause();
   }
