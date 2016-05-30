@@ -89,7 +89,6 @@ void keyTyped() { // for testing between modes
       }
       r.gameState = 0;
     }
-    restartGame();
   }
   if (r.gameState == 0) {
     if (key == ' ') {

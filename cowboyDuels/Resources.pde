@@ -8,7 +8,7 @@ class Resource {
   public int gameState = 0; // will determine what menu the game should be at
   public int leftScore = 0; // score variables for left and right players
   public int rightScore = 0;
-  public int maxScore = 10;
+  public int maxScore = 5;
   public int titleY = -30;
   public int opacity = 0; // opacity stores % for main menu animation having text fade in
 
